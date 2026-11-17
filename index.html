@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2D5997">
+  <title>Place to Hear. — Your Voice Matters</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --butter: #F2D976;
+      --lapis: #2D5997;
+      --oyster: #C5C38F;
+      --ivory: #F7F5EE;
+      --navy: #243B5B;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--ivory);
+      color: var(--navy);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.6;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 7%;
+      background: var(--ivory);
+    }
+
+    .logo {
+      color: var(--lapis);
+      font-weight: 800;
+      font-size: 21px;
+      letter-spacing: -1px;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--navy);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .hero {
+      padding: 65px 7% 75px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 45px;
+    }
+
+    .eyebrow {
+      color: var(--lapis);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(45px, 6vw, 75px);
+      line-height: 1.12;
+      margin-bottom: 20px;
+    }
+
+    h1 span {
+      color: var(--lapis);
+      font-style: italic;
+    }
+
+    .hero-description {
+      max-width: 420px;
+      color: #68758A;
+      font-size: 15px;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 13px;
+      padding: 13px 22px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--lapis);
+      color: white;
+    }
+
+    .btn-secondary {
+      border: 1.5px solid var(--lapis);
+      color: var(--lapis);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .hero-image {
+      position: relative;
+      min-height: 350px;
+      border-radius: 48% 48% 20px 20px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, transparent, rgba(18,43,79,.2)),
+        url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1000&q=85')
+        center/cover;
+    }
+
+    .image-note {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      padding: 14px;
+      border-radius: 13px;
+      background: rgba(247,245,238,.9);
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .jelly {
+      position: absolute;
+      top: 35px;
+      right: 35px;
+      width: 90px;
+      height: 75px;
+      background: rgba(242,217,118,.85);
+      border-radius: 50% 50% 42% 42%;
+      box-shadow: 0 0 30px rgba(242,217,118,.5);
+    }
+
+    .jelly::after {
+      content: "〰 〰 〰";
+      position: absolute;
+      top: 65px;
+      left: 10px;
+      color: var(--butter);
+      font-size: 24px;
+      letter-spacing: 3px;
+    }
+
+    .intro {
+      background: var(--butter);
+      padding: 55px 7%;
+      text-align: center;
+    }
+
+    .intro h2, .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .intro p {
+      max-width: 520px;
+      margin: auto;
+      font-size: 14px;
+    }
+
+    .features {
+      padding: 65px 7%;
+      text-align: center;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      max-width: 850px;
+      margin: 30px auto 0;
+      text-align: left;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      border: 1px solid #e8e5d9;
+    }
+
+    .feature-card .emoji {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .feature-card h3 {
+      font-size: 17px;
+      margin-bottom: 7px;
+    }
+
+    .feature-card p {
+      color: #748095;
+      font-size: 13px;
+    }
+
+    .feature-card a {
+      display: inline-block;
+      color: var(--lapis);
+      font-weight: 700;
+      font-size: 13px;
+      margin-top: 16px;
+      text-decoration: none;
+    }
+
+    .notice {
+      margin: 25px auto 0;
+      max-width: 600px;
+      background: #fff9df;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: var(--navy);
+    }
+
+    footer {
+      background: var(--lapis);
+      color: white;
+      text-align: center;
+      padding: 30px 15px;
+      font-size: 12px;
+    }
+
+    footer strong {
+      color: var(--butter);
+    }
+
+    @media (max-width: 650px) {
+      nav {
+        padding: 17px 6%;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 45px 7% 50px;
+        gap: 30px;
+      }
+
+      h1 {
+        font-size: 49px;
+      }
+
+      .hero-image {
+        min-height: 290px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .intro h2, .section-title {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">place to hear.</div>
+    <a class="nav-link" href="#about">ABOUT US ↗</a>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">A safe place to speak</p>
+
+        <h1>
+          Your voice<br>
+          deserves to<br>
+          be <span>heard.</span>
+        </h1>
+
+        <p class="hero-description">
+          Ketika banyak yang bisa berbicara namun sedikit
+          yang mendengar. Mari jadikan setiap suara berarti
+          melalui Place to Hear.
+        </p>
+
+        <div class="buttons">
+          <a href="#kirim" class="btn btn-primary">
+            Send Your Voice ↗
+          </a>
+
+          <a href="#lacak" class="btn btn-secondary">
+            Track My Voice
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-image">
+        <div class="jelly"></div>
+        <div class="image-note">
+          Every voice has a story. Every story deserves to be heard. 🪼
+        </div>
+      </div>
+    </section>
+
+    <section class="intro" id="about">
+      <h2>A little space to be heard.</h2>
+      <p>
+        Place to Hear adalah ruang aspirasi MPK untuk
+        menyampaikan saran, kritik, keluhan, ide, dan apresiasi
+        demi lingkungan sekolah yang lebih baik.
+      </p>
+    </section>
+
+    <section class="features">
+      <p class="eyebrow">Make your voice count</p>
+      <h2 class="section-title">Where would you like to go?</h2>
+
+      <div class="feature-grid">
+        <div class="feature-card" id="kirim">
+          <div class="emoji">💌</div>
+          <h3>Send an Aspiration</h3>
+          <p>
+            Punya sesuatu yang ingin disampaikan?
+            Kirimkan aspirasi kamu di sini.
+          </p>
+          <a href="#kirim">Form sedang disiapkan ↗</a>
+        </div>
+
+        <div class="feature-card" id="lacak">
+          <div class="emoji">🪼</div>
+          <h3>Track Your Aspiration</h3>
+          <p>
+            Pantau perkembangan aspirasi kamu
+            menggunakan kode pelacakan.
+          </p>
+          <a href="#lacak">Pelacakan sedang disiapkan ↗</a>
+        </div>
+      </div>
+
+      <div class="notice">
+        ✦ Fitur pengiriman dan pelacakan aspirasi sedang
+        dalam tahap pengembangan.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>PLACE TO HEAR.</strong>
+    <p>When many can speak, let us be the ones who listen.</p>
+    <p>© 2026 MPK · All voices matter.</p>
+  </footer>
+
+</body>
+</html>
+p
