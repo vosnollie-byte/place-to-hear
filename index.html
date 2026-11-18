@@ -2,381 +2,477 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#2D5997">
-  <title>Place to Hear. — Your Voice Matters</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Place to Hear — MPK 26/27</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    :root {
-      --butter: #F2D976;
-      --lapis: #2D5997;
-      --oyster: #C5C38F;
-      --ivory: #F7F5EE;
-      --navy: #243B5B;
-    }
+<style>
+:root {
+  --blue: #c4dae8;
+  --yellow: #feefb8;
+  --brown: #432f2e;
+  --white: #fffdf7;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+* { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--brown);
+  font-family: Arial, sans-serif;
+}
 
-    body {
-      background: var(--ivory);
-      color: var(--navy);
-      font-family: 'DM Sans', sans-serif;
-      line-height: 1.6;
-    }
+header {
+  padding: 22px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e8dfd2;
+}
 
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 7%;
-      background: var(--ivory);
-    }
+.logo {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
 
-    .logo {
-      color: var(--lapis);
-      font-weight: 800;
-      font-size: 21px;
-      letter-spacing: -1px;
-    }
+nav button {
+  background: none;
+  border: none;
+  color: var(--brown);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px;
+}
 
-    .nav-link {
-      text-decoration: none;
-      color: var(--navy);
-      font-size: 13px;
-      font-weight: 600;
-    }
+.hero {
+  padding: 75px 8% 65px;
+  background: var(--blue);
+}
 
-    .hero {
-      padding: 65px 7% 75px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 45px;
-    }
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
 
-    .eyebrow {
-      color: var(--lapis);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 18px;
-    }
+h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(48px, 10vw, 88px);
+  line-height: .98;
+  max-width: 750px;
+  margin: 25px 0;
+  letter-spacing: -4px;
+}
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(45px, 6vw, 75px);
-      line-height: 1.12;
-      margin-bottom: 20px;
-    }
+.hero p {
+  font-size: 16px;
+  line-height: 1.8;
+  max-width: 500px;
+}
 
-    h1 span {
-      color: var(--lapis);
-      font-style: italic;
-    }
+.section {
+  padding: 55px 8%;
+}
 
-    .hero-description {
-      max-width: 420px;
-      color: #68758A;
-      font-size: 15px;
-      margin-bottom: 30px;
-    }
+.section-title {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  margin-bottom: 10px;
+}
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+.note {
+  background: var(--yellow);
+  padding: 18px;
+  border-radius: 12px;
+  line-height: 1.7;
+  margin: 25px 0;
+}
 
-    .btn {
-      display: inline-block;
-      text-decoration: none;
-      border-radius: 13px;
-      padding: 13px 22px;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 700;
-      transition: 0.2s;
-    }
+form {
+  max-width: 650px;
+}
 
-    .btn-primary {
-      background: var(--lapis);
-      color: white;
-    }
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 20px 0 8px;
+}
 
-    .btn-secondary {
-      border: 1.5px solid var(--lapis);
-      color: var(--lapis);
-    }
+input, select, textarea {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #d8cfc3;
+  border-radius: 9px;
+  background: white;
+  color: var(--brown);
+  font: inherit;
+  outline-color: var(--blue);
+}
 
-    .btn:hover {
-      transform: translateY(-3px);
-    }
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
 
-    .hero-image {
-      position: relative;
-      min-height: 350px;
-      border-radius: 48% 48% 20px 20px;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, transparent, rgba(18,43,79,.2)),
-        url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1000&q=85')
-        center/cover;
-    }
+.primary {
+  margin-top: 22px;
+  background: var(--brown);
+  color: white;
+  border: none;
+  padding: 15px 24px;
+  border-radius: 9px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .image-note {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      padding: 14px;
-      border-radius: 13px;
-      background: rgba(247,245,238,.9);
-      color: var(--navy);
-      font-size: 12px;
-      font-weight: 600;
-    }
+.primary:disabled {
+  opacity: .5;
+}
 
-    .jelly {
-      position: absolute;
-      top: 35px;
-      right: 35px;
-      width: 90px;
-      height: 75px;
-      background: rgba(242,217,118,.85);
-      border-radius: 50% 50% 42% 42%;
-      box-shadow: 0 0 30px rgba(242,217,118,.5);
-    }
+.status {
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+}
 
-    .jelly::after {
-      content: "〰 〰 〰";
-      position: absolute;
-      top: 65px;
-      left: 10px;
-      color: var(--butter);
-      font-size: 24px;
-      letter-spacing: 3px;
-    }
+.admin-area {
+  background: var(--blue);
+  padding: 45px 8%;
+}
 
-    .intro {
-      background: var(--butter);
-      padding: 55px 7%;
-      text-align: center;
-    }
+.item {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  overflow-wrap: anywhere;
+}
 
-    .intro h2, .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
+.item small {
+  opacity: .7;
+}
 
-    .intro p {
-      max-width: 520px;
-      margin: auto;
-      font-size: 14px;
-    }
+.hidden { display: none !important; }
 
-    .features {
-      padding: 65px 7%;
-      text-align: center;
-    }
+footer {
+  padding: 30px 8%;
+  background: var(--brown);
+  color: white;
+  font-size: 13px;
+  line-height: 1.8;
+}
 
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-      max-width: 850px;
-      margin: 30px auto 0;
-      text-align: left;
-    }
-
-    .feature-card {
-      background: white;
-      padding: 25px;
-      border-radius: 18px;
-      border: 1px solid #e8e5d9;
-    }
-
-    .feature-card .emoji {
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
-
-    .feature-card h3 {
-      font-size: 17px;
-      margin-bottom: 7px;
-    }
-
-    .feature-card p {
-      color: #748095;
-      font-size: 13px;
-    }
-
-    .feature-card a {
-      display: inline-block;
-      color: var(--lapis);
-      font-weight: 700;
-      font-size: 13px;
-      margin-top: 16px;
-      text-decoration: none;
-    }
-
-    .notice {
-      margin: 25px auto 0;
-      max-width: 600px;
-      background: #fff9df;
-      padding: 15px;
-      border-radius: 12px;
-      font-size: 12px;
-      color: var(--navy);
-    }
-
-    footer {
-      background: var(--lapis);
-      color: white;
-      text-align: center;
-      padding: 30px 15px;
-      font-size: 12px;
-    }
-
-    footer strong {
-      color: var(--butter);
-    }
-
-    @media (max-width: 650px) {
-      nav {
-        padding: 17px 6%;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-        padding: 45px 7% 50px;
-        gap: 30px;
-      }
-
-      h1 {
-        font-size: 49px;
-      }
-
-      .hero-image {
-        min-height: 290px;
-      }
-
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .intro h2, .section-title {
-        font-size: 27px;
-      }
-    }
-  </style>
+@media(max-width:500px) {
+  header { padding: 18px 5%; }
+  .hero { padding: 55px 7%; }
+  .section { padding: 40px 7%; }
+  h1 { letter-spacing: -2px; }
+}
+</style>
 </head>
 
 <body>
 
+<header>
+  <div class="logo">PLACE TO HEAR.</div>
   <nav>
-    <div class="logo">place to hear.</div>
-    <a class="nav-link" href="#about">ABOUT US ↗</a>
+    <button onclick="showSection('home')">Beranda</button>
+    <button onclick="showSection('form')">Aspirasi</button>
+    <button onclick="showSection('admin')">MPK</button>
   </nav>
+</header>
 
-  <main>
-    <section class="hero">
-      <div>
-        <p class="eyebrow">A safe place to speak</p>
+<main id="home">
+  <section class="hero">
+    <div class="eyebrow">MPK SMA · 2026/2027</div>
+    <h1>Every voice deserves to be heard.</h1>
+    <p>
+      Tempat untuk menyampaikan pendapat, cerita,
+      kritik, dan harapan. Karena setiap suara
+      memiliki arti.
+    </p>
+    <button class="primary" onclick="showSection('form')">
+      Sampaikan Aspirasi →
+    </button>
+  </section>
 
-        <h1>
-          Your voice<br>
-          deserves to<br>
-          be <span>heard.</span>
-        </h1>
+  <section class="section">
+    <div class="eyebrow">RUANG DENGAR</div>
+    <div class="section-title">Kami mendengarkan.</div>
+    <p style="line-height:1.8;max-width:550px">
+      Place to Hear merupakan ruang aspirasi siswa
+      yang dikelola oleh Majelis Perwakilan Kelas.
+      Sampaikan aspirasimu dengan nyaman.
+    </p>
+    <div class="note">
+      <b>Suaramu penting.</b><br>
+      Setiap aspirasi akan diterima dan ditinjau
+      oleh anggota MPK.
+    </div>
+  </section>
+</main>
 
-        <p class="hero-description">
-          Ketika banyak yang bisa berbicara namun sedikit
-          yang mendengar. Mari jadikan setiap suara berarti
-          melalui Place to Hear.
-        </p>
+<section id="form" class="section hidden">
+  <div class="eyebrow">YOUR VOICE MATTERS</div>
+  <div class="section-title">Kirim aspirasi.</div>
+  <p>Isi formulir berikut dengan jelas dan sopan.</p>
 
-        <div class="buttons">
-          <a href="#kirim" class="btn btn-primary">
-            Send Your Voice ↗
-          </a>
+  <form id="aspirationForm">
+    <label>Nama</label>
+    <input id="senderName" maxlength="100"
+      placeholder="Nama kamu" required>
 
-          <a href="#lacak" class="btn btn-secondary">
-            Track My Voice
-          </a>
-        </div>
-      </div>
+    <label>Kelas</label>
+    <input id="senderClass" maxlength="50"
+      placeholder="Contoh: XI IPA 1" required>
 
-      <div class="hero-image">
-        <div class="jelly"></div>
-        <div class="image-note">
-          Every voice has a story. Every story deserves to be heard. 🪼
-        </div>
-      </div>
-    </section>
+    <label>Kategori</label>
+    <select id="category" required>
+      <option value="">Pilih kategori</option>
+      <option>Fasilitas Sekolah</option>
+      <option>Pembelajaran</option>
+      <option>Ekstrakurikuler</option>
+      <option>Lingkungan Sekolah</option>
+      <option>Kegiatan Sekolah</option>
+      <option>Umum</option>
+    </select>
 
-    <section class="intro" id="about">
-      <h2>A little space to be heard.</h2>
-      <p>
-        Place to Hear adalah ruang aspirasi MPK untuk
-        menyampaikan saran, kritik, keluhan, ide, dan apresiasi
-        demi lingkungan sekolah yang lebih baik.
-      </p>
-    </section>
+    <label>Judul aspirasi</label>
+    <input id="title" maxlength="150"
+      placeholder="Apa yang ingin kamu sampaikan?" required>
 
-    <section class="features">
-      <p class="eyebrow">Make your voice count</p>
-      <h2 class="section-title">Where would you like to go?</h2>
+    <label>Isi aspirasi</label>
+    <textarea id="content" maxlength="5000"
+      placeholder="Ceritakan aspirasi kamu di sini..."
+      required></textarea>
 
-      <div class="feature-grid">
-        <div class="feature-card" id="kirim">
-          <div class="emoji">💌</div>
-          <h3>Send an Aspiration</h3>
-          <p>
-            Punya sesuatu yang ingin disampaikan?
-            Kirimkan aspirasi kamu di sini.
-          </p>
-          <a href="#kirim">Form sedang disiapkan ↗</a>
-        </div>
+    <button class="primary" id="submitBtn" type="submit">
+      Kirim Aspirasi →
+    </button>
 
-        <div class="feature-card" id="lacak">
-          <div class="emoji">🪼</div>
-          <h3>Track Your Aspiration</h3>
-          <p>
-            Pantau perkembangan aspirasi kamu
-            menggunakan kode pelacakan.
-          </p>
-          <a href="#lacak">Pelacakan sedang disiapkan ↗</a>
-        </div>
-      </div>
+    <div class="status" id="formStatus"></div>
+  </form>
+</section>
 
-      <div class="notice">
-        ✦ Fitur pengiriman dan pelacakan aspirasi sedang
-        dalam tahap pengembangan.
-      </div>
-    </section>
-  </main>
+<section id="admin" class="admin-area hidden">
+  <div class="eyebrow">PRIVATE AREA</div>
+  <div class="section-title">Ruang Kerja MPK.</div>
 
-  <footer>
-    <strong>PLACE TO HEAR.</strong>
-    <p>When many can speak, let us be the ones who listen.</p>
-    <p>© 2026 MPK · All voices matter.</p>
-  </footer>
+  <div id="loginArea">
+    <p>Masuk menggunakan akun anggota MPK.</p>
+    <form id="loginForm">
+      <label>Email</label>
+      <input id="email" type="email" required>
 
+      <label>Password</label>
+      <input id="password" type="password" required>
+
+      <button class="primary" type="submit">Masuk</button>
+      <div class="status" id="loginStatus"></div>
+    </form>
+  </div>
+
+  <div id="dashboard" class="hidden">
+    <p id="welcome"></p>
+    <button class="primary" onclick="logout()">Keluar</button>
+    <h3>Daftar Aspirasi</h3>
+    <div id="aspirationList"></div>
+  </div>
+</section>
+
+<footer>
+  <b>PLACE TO HEAR — MPK 26/27</b><br>
+  Ketika banyak yang bisa berbicara,
+  namun sedikit yang mendengar.
+</footer>
+
+<script>
+// =====================================
+// SUPABASE CONFIGURATION
+// =====================================
+
+const SUPABASE_URL = "https://vczawoorabvhustrsfwo.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_fgsq2pdP5CTHfRcuG6DTXQ_5-PaZSNp";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+// =====================================
+// NAVIGATION
+// =====================================
+
+function showSection(section) {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("form").classList.add("hidden");
+  document.getElementById("admin").classList.add("hidden");
+
+  document.getElementById(section).classList.remove("hidden");
+
+  if(section === "admin") checkSession();
+
+  window.scrollTo(0, 0);
+}
+
+// =====================================
+// SUBMIT ASPIRATION
+// =====================================
+
+document.getElementById("aspirationForm")
+.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const btn = document.getElementById("submitBtn");
+  const status = document.getElementById("formStatus");
+
+  btn.disabled = true;
+  status.textContent = "Mengirim aspirasi...";
+
+  const data = {
+    sender_name: document.getElementById("senderName").value.trim(),
+    sender_class: document.getElementById("senderClass").value.trim(),
+    category: document.getElementById("category").value,
+    title: document.getElementById("title").value.trim(),
+    content: document.getElementById("content").value.trim()
+  };
+
+  const { error } = await db
+    .from("aspirations")
+    .insert(data);
+
+  btn.disabled = false;
+
+  if(error) {
+    status.textContent = "Gagal mengirim: " + error.message;
+    return;
+  }
+
+  status.textContent =
+    "Terima kasih! Aspirasi kamu berhasil dikirim.";
+
+  this.reset();
+});
+
+// =====================================
+// ADMIN LOGIN
+// =====================================
+
+document.getElementById("loginForm")
+.addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const status = document.getElementById("loginStatus");
+  status.textContent = "Memeriksa akun...";
+
+  const { error } = await db.auth.signInWithPassword({
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value
+  });
+
+  if(error) {
+    status.textContent = "Login gagal: " + error.message;
+    return;
+  }
+
+  await checkSession();
+});
+
+async function checkSession() {
+  const { data: { user } } = await db.auth.getUser();
+
+  if(!user) {
+    document.getElementById("loginArea").classList.remove("hidden");
+    document.getElementById("dashboard").classList.add("hidden");
+    return;
+  }
+
+  const { data: profile, error } = await db
+    .from("profiles")
+    .select("full_name, display_name, access_level, custom_role")
+    .eq("id", user.id)
+    .single();
+
+  if(error || !profile) {
+    document.getElementById("loginStatus").textContent =
+      "Profil tidak ditemukan.";
+    await db.auth.signOut();
+    return;
+  }
+
+  document.getElementById("loginArea").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
+
+  document.getElementById("welcome").textContent =
+    "Halo, " + (profile.display_name || profile.full_name || "Anggota") +
+    " · " + profile.custom_role;
+
+  await loadAspirations();
+}
+
+// =====================================
+// LOAD ASPIRATIONS
+// =====================================
+
+async function loadAspirations() {
+  const list = document.getElementById("aspirationList");
+  list.textContent = "Memuat aspirasi...";
+
+  const { data, error } = await db
+    .from("aspirations")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if(error) {
+    list.textContent = "Gagal memuat aspirasi: " + error.message;
+    return;
+  }
+
+  list.replaceChildren();
+
+  if(!data || data.length === 0) {
+    list.textContent = "Belum ada aspirasi masuk.";
+    return;
+  }
+
+  data.forEach(item => {
+    const card = document.createElement("article");
+    card.className = "item";
+
+    const heading = document.createElement("h3");
+    heading.textContent = item.title;
+
+    const meta = document.createElement("small");
+    meta.textContent =
+      item.sender_name + " · " + item.sender_class +
+      " · " + item.category;
+
+    const body = document.createElement("p");
+    body.textContent = item.content;
+
+    const status = document.createElement("small");
+    status.textContent = "Status: " + item.status;
+
+    card.append(heading, meta, body, status);
+    list.appendChild(card);
+  });
+}
+
+// =====================================
+// LOGOUT
+// =====================================
+
+async function logout() {
+  await db.auth.signOut();
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("loginArea").classList.remove("hidden");
+}
+
+</script>
 </body>
 </html>
-p
