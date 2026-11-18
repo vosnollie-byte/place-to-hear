@@ -1,478 +1,686 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2D5997">
 <title>Place to Hear — MPK 26/27</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --blue: #c4dae8;
-  --yellow: #feefb8;
-  --brown: #432f2e;
-  --white: #fffdf7;
+  --butter:#F2D976;
+  --lapis:#2D5997;
+  --oyster:#C5C38F;
+  --ivory:#F7F5EE;
+  --navy:#243B5B;
+  --white:#fffefa;
+  --muted:#64748b;
+  --line:rgba(36,59,91,.13);
+  --shadow:0 16px 42px rgba(36,59,91,.13);
 }
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--white);
-  color: var(--brown);
-  font-family: Arial, sans-serif;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ivory);color:var(--navy);font-family:"Nunito",Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.site-header{position:sticky;top:0;z-index:20;background:rgba(247,245,238,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.header-inner{max-width:1240px;margin:auto;padding:13px 4.5%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--navy);font-weight:1000;font-size:19px;line-height:1;letter-spacing:-.8px}
+.brand-mark{font-size:30px;line-height:1}
+.nav-links{display:flex;align-items:center;gap:5px}
+.nav-links button,.nav-actions button{border:0;background:transparent;color:var(--navy);font-weight:800;padding:10px 15px;border-radius:999px}
+.nav-links button:hover,.nav-links button.active{background:var(--butter)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.lang-toggle{display:flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:3px;background:white}
+.lang-toggle button{border:0;background:transparent;color:var(--navy);font-size:12px;font-weight:900;padding:6px 9px;border-radius:999px}
+.lang-toggle button.active{background:var(--navy);color:white}
+.login-link{background:var(--navy)!important;color:white!important;padding:10px 18px!important}
+.mobile-menu{display:none}
+.hero{position:relative;overflow:hidden;background:linear-gradient(115deg,#9cc6e5 0%,#6fa9d5 48%,#2D5997 100%);min-height:530px;color:white}
+.hero:before{content:"";position:absolute;width:620px;height:620px;border-radius:50%;right:-70px;top:-190px;background:radial-gradient(circle,rgba(255,255,255,.35),rgba(255,255,255,0) 68%)}
+.hero:after{content:"";position:absolute;left:-5%;right:-5%;bottom:-75px;height:145px;background:var(--ivory);border-radius:50% 50% 0 0/40% 48% 0 0;transform:rotate(-2deg)}
+.hero-inner{max-width:1240px;min-height:530px;margin:auto;padding:72px 6% 110px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:20px;position:relative;z-index:1}
+.eyebrow{font-size:12px;letter-spacing:2.8px;font-weight:1000;text-transform:uppercase}
+.hero h1{font-size:clamp(44px,6.2vw,78px);line-height:.98;letter-spacing:-3px;margin:18px 0 22px;max-width:650px;font-weight:1000}
+.hero h1 span{color:var(--butter);text-shadow:0 3px 0 rgba(36,59,91,.08)}
+.hero-copy{font-size:17px;line-height:1.65;max-width:480px;color:rgba(255,255,255,.96)}
+.hero-buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn-primary,.btn-secondary{border:0;border-radius:999px;padding:14px 24px;font-weight:1000;box-shadow:0 8px 18px rgba(24,49,83,.16)}
+.btn-primary{background:var(--butter);color:var(--navy)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-secondary{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.7);color:white}
+.hero-art{position:relative;display:grid;place-items:center;min-height:300px}
+.jelly-orbit{position:absolute;width:min(390px,85%);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 36% 30%,rgba(255,255,255,.72),rgba(255,255,255,.12) 57%,rgba(255,255,255,.04) 72%);border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 0 45px rgba(255,255,255,.16)}
+.jelly{position:relative;font-size:clamp(150px,21vw,270px);filter:drop-shadow(0 18px 16px rgba(24,49,83,.2));animation:float 5s ease-in-out infinite}
+.bubble{position:absolute;border:2px solid rgba(255,255,255,.6);border-radius:50%;background:rgba(255,255,255,.13)}
+.b1{width:20px;height:20px;top:25%;left:10%}.b2{width:13px;height:13px;right:9%;top:19%}.b3{width:30px;height:30px;bottom:18%;left:18%}.b4{width:9px;height:9px;right:15%;bottom:24%}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(3deg)}}
+.hero-note{position:absolute;left:6%;bottom:20px;z-index:2;background:rgba(247,245,238,.94);color:var(--navy);border-radius:22px;padding:13px 19px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);font-size:13px;font-weight:800}
+.hero-note .star{font-size:25px;color:#e5b925}
+.hero-note small{display:block;color:#52627a;font-weight:600}
+.page-section{max-width:1120px;margin:auto;padding:60px 5%}
+.section-kicker{color:var(--lapis);font-size:12px;letter-spacing:2.2px;font-weight:1000;text-transform:uppercase}
+.section-heading{font-size:clamp(30px,4vw,43px);letter-spacing:-1.5px;line-height:1.08;margin:9px 0;color:var(--navy);font-weight:1000}
+.section-intro{color:#5e6c81;line-height:1.7;max-width:650px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+.feature-card{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 8px 24px rgba(36,59,91,.06)}
+.feature-icon{font-size:31px}
+.feature-card h3{margin:9px 0 5px;font-size:18px}
+.feature-card p{margin:0;color:#637087;line-height:1.6;font-size:14px}
+.page-section.form-page,.page-section.space-page,.page-section.about-page{padding-top:48px;padding-bottom:75px}
+.form-shell{display:grid;grid-template-columns:.72fr 1.28fr;gap:26px;align-items:start}
+.form-aside{position:sticky;top:105px;background:linear-gradient(150deg,var(--lapis),var(--navy));color:white;border-radius:26px;padding:27px;overflow:hidden}
+.form-aside .aside-jelly{font-size:85px;text-align:center;margin:12px 0}
+.form-aside h2{font-size:27px;line-height:1.1;margin:0 0 12px}
+.form-aside p{color:rgba(255,255,255,.82);line-height:1.7;font-size:14px}
+.form-card{background:var(--white);border:1px solid var(--line);border-radius:26px;padding:clamp(20px,4vw,38px);box-shadow:var(--shadow)}
+.form-card h2{font-size:28px;margin:0 0 6px}
+.form-card .lead{margin:0 0 22px;color:#64748b;line-height:1.6}
+.field{margin:17px 0}
+.field label,.field-label{display:block;font-weight:900;font-size:14px;margin:0 0 8px}
+.optional{font-size:11px;color:#738095;font-weight:700;margin-left:5px}
+input[type=text],input[type=email],input[type=password],select,textarea{width:100%;border:1.5px solid #dce2e8;border-radius:13px;background:white;color:var(--navy);padding:13px 15px;outline:none;transition:border .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--lapis);box-shadow:0 0 0 3px rgba(45,89,151,.1)}
+textarea{min-height:155px;resize:vertical;line-height:1.6}
+.check-card{display:flex;gap:12px;align-items:flex-start;background:#fff9df;border:1.5px solid #f0df98;border-radius:15px;padding:14px;margin:16px 0}
+.check-card input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--lapis)}
+.check-card label{margin:0;font-weight:900}
+.check-card small{display:block;color:#6d7480;font-weight:600;line-height:1.45;margin-top:3px}
+.radio-row{display:flex;gap:10px;flex-wrap:wrap}
+.radio-pill{display:flex;gap:8px;align-items:center;border:1.5px solid #dce2e8;background:#fff;border-radius:999px;padding:10px 15px;font-weight:800;font-size:14px}
+.radio-pill input{accent-color:var(--lapis)}
+.hint{font-size:12px;color:#748095;line-height:1.5;margin:7px 0 0}
+.form-submit{width:100%;margin-top:12px}
+.form-status{min-height:22px;margin-top:13px;font-size:13px;line-height:1.5;font-weight:800}
+.form-status.error{color:#a33b3b}.form-status.success{color:#27724e}
+.tracking-note{font-size:12px;color:#6b778a;margin-top:12px;line-height:1.5}
+.space-card{background:var(--white);border:1px solid var(--line);border-radius:23px;padding:22px;margin:17px 0;box-shadow:0 8px 24px rgba(36,59,91,.06)}
+.space-meta{font-size:12px;color:#768196;font-weight:800;margin:6px 0 12px}
+.status-chip{display:inline-flex;padding:6px 11px;border-radius:999px;background:#fff3c4;color:#66551a;font-size:12px;font-weight:1000}
+.status-chip.progress{background:#dcecff;color:#24528a}.status-chip.done{background:#dff3e8;color:#276345}
+.response-box{margin-top:14px;padding:13px 15px;border-left:4px solid var(--oyster);background:#f6f5eb;border-radius:0 12px 12px 0;line-height:1.55;font-size:14px}
+.admin-page{max-width:1120px;margin:auto;padding:48px 5% 75px}
+.admin-panel{background:var(--white);border:1px solid var(--line);border-radius:24px;padding:clamp(18px,3vw,30px);box-shadow:var(--shadow)}
+.admin-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn-small{border:0;border-radius:999px;background:var(--navy);color:white;padding:10px 16px;font-weight:900}
+.admin-item{background:white;border:1px solid var(--line);border-radius:17px;padding:18px;margin:15px 0}
+.admin-item h3{margin:0 0 5px;font-size:19px}
+.admin-meta{font-size:12px;color:#6b778a;line-height:1.6;margin-bottom:12px}
+.admin-body{line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.admin-controls{display:grid;grid-template-columns:1fr 1.5fr auto;gap:10px;align-items:end;margin-top:16px}
+.admin-controls label{font-size:12px;font-weight:900;display:block;margin-bottom:6px}
+.admin-controls textarea{min-height:75px}
+footer{background:var(--navy);color:white;padding:32px 5%;text-align:center;line-height:1.7}
+footer .footer-brand{font-size:20px;font-weight:1000}
+footer small{color:rgba(255,255,255,.7)}
+.mobile-bottom{display:none}
+@media(max-width:820px){
+ .header-inner{flex-wrap:wrap}.nav-links{order:3;width:100%;justify-content:center;overflow-x:auto}.nav-links button{white-space:nowrap;padding:9px 12px;font-size:13px}
+ .hero-inner{grid-template-columns:1fr;min-height:auto;padding-top:55px;text-align:center}.hero-copy{margin:auto}.hero-buttons{justify-content:center}.hero-art{min-height:250px}.jelly{font-size:190px}
+ .hero-note{left:5%;bottom:15px}
+ .form-shell{grid-template-columns:1fr}.form-aside{position:relative;top:auto}.form-aside .aside-jelly{display:none}
+ .admin-controls{grid-template-columns:1fr}
 }
-
-header {
-  padding: 22px 7%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #e8dfd2;
-}
-
-.logo {
-  font-size: 20px;
-  font-weight: 900;
-  letter-spacing: -1px;
-}
-
-nav button {
-  background: none;
-  border: none;
-  color: var(--brown);
-  font-weight: bold;
-  cursor: pointer;
-  padding: 10px;
-}
-
-.hero {
-  padding: 75px 8% 65px;
-  background: var(--blue);
-}
-
-.eyebrow {
-  font-size: 12px;
-  letter-spacing: 3px;
-  font-weight: bold;
-}
-
-h1 {
-  font-family: Georgia, serif;
-  font-size: clamp(48px, 10vw, 88px);
-  line-height: .98;
-  max-width: 750px;
-  margin: 25px 0;
-  letter-spacing: -4px;
-}
-
-.hero p {
-  font-size: 16px;
-  line-height: 1.8;
-  max-width: 500px;
-}
-
-.section {
-  padding: 55px 8%;
-}
-
-.section-title {
-  font-family: Georgia, serif;
-  font-size: 34px;
-  margin-bottom: 10px;
-}
-
-.note {
-  background: var(--yellow);
-  padding: 18px;
-  border-radius: 12px;
-  line-height: 1.7;
-  margin: 25px 0;
-}
-
-form {
-  max-width: 650px;
-}
-
-label {
-  display: block;
-  font-size: 13px;
-  font-weight: bold;
-  margin: 20px 0 8px;
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 15px;
-  border: 1px solid #d8cfc3;
-  border-radius: 9px;
-  background: white;
-  color: var(--brown);
-  font: inherit;
-  outline-color: var(--blue);
-}
-
-textarea {
-  min-height: 150px;
-  resize: vertical;
-}
-
-.primary {
-  margin-top: 22px;
-  background: var(--brown);
-  color: white;
-  border: none;
-  padding: 15px 24px;
-  border-radius: 9px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.primary:disabled {
-  opacity: .5;
-}
-
-.status {
-  margin-top: 15px;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.admin-area {
-  background: var(--blue);
-  padding: 45px 8%;
-}
-
-.item {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 15px 0;
-  overflow-wrap: anywhere;
-}
-
-.item small {
-  opacity: .7;
-}
-
-.hidden { display: none !important; }
-
-footer {
-  padding: 30px 8%;
-  background: var(--brown);
-  color: white;
-  font-size: 13px;
-  line-height: 1.8;
-}
-
-@media(max-width:500px) {
-  header { padding: 18px 5%; }
-  .hero { padding: 55px 7%; }
-  .section { padding: 40px 7%; }
-  h1 { letter-spacing: -2px; }
+@media(max-width:560px){
+ .header-inner{padding:11px 4%}.brand{font-size:17px}.brand-mark{font-size:25px}
+ .nav-links{justify-content:flex-start}.nav-links button{padding:8px 11px}
+ .nav-actions{gap:4px}.login-link{padding:8px 12px!important;font-size:12px}
+ .hero h1{font-size:46px;letter-spacing:-2px}.hero-copy{font-size:15px}.hero-inner{padding:47px 6% 115px}
+ .hero-art{min-height:220px}.jelly{font-size:165px}
+ .hero-note{font-size:11px;left:4%;right:4%;bottom:13px;justify-content:center}
+ .page-section{padding:42px 5%}.feature-grid{grid-template-columns:1fr}
+ .form-card{padding:19px;border-radius:20px}.form-card h2{font-size:24px}
+ .form-aside{padding:20px;border-radius:20px}
+ .mobile-bottom{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom));background:rgba(247,245,238,.97);border-top:1px solid var(--line);backdrop-filter:blur(12px)}
+ .mobile-bottom button{border:0;background:transparent;color:var(--navy);font-size:11px;font-weight:900;padding:5px 8px}
+ body{padding-bottom:58px}
 }
 </style>
 </head>
-
 <body>
-
-<header>
-  <div class="logo">PLACE TO HEAR.</div>
-  <nav>
-    <button onclick="showSection('home')">Beranda</button>
-    <button onclick="showSection('form')">Aspirasi</button>
-    <button onclick="showSection('admin')">MPK</button>
+<header class="site-header">
+ <div class="header-inner">
+  <div class="brand"><span class="brand-mark">🪼</span><span>Place<br>to Hear.</span></div>
+  <nav class="nav-links" aria-label="Main navigation">
+   <button class="active" data-section="home" data-i18n="navHome" onclick="showSection('home')">Home</button>
+   <button data-section="aspiration" data-i18n="navAspiration" onclick="showSection('aspiration')">Aspirasi</button>
+   <button data-section="about" data-i18n="navAbout" onclick="showSection('about')">About</button>
+   <button data-section="space" data-i18n="navSpace" onclick="showSection('space')">My Space</button>
   </nav>
+  <div class="nav-actions">
+   <div class="lang-toggle" aria-label="Language">
+    <button id="langID" class="active" onclick="setLanguage('id')">ID</button>
+    <button id="langEN" onclick="setLanguage('en')">EN</button>
+   </div>
+   <button class="login-link" data-i18n="navLogin" onclick="showSection('admin')">Login ↗</button>
+  </div>
+ </div>
 </header>
 
 <main id="home">
-  <section class="hero">
-    <div class="eyebrow">MPK SMA · 2026/2027</div>
-    <h1>Every voice deserves to be heard.</h1>
-    <p>
-      Tempat untuk menyampaikan pendapat, cerita,
-      kritik, dan harapan. Karena setiap suara
-      memiliki arti.
-    </p>
-    <button class="primary" onclick="showSection('form')">
-      Sampaikan Aspirasi →
-    </button>
-  </section>
-
-  <section class="section">
-    <div class="eyebrow">RUANG DENGAR</div>
-    <div class="section-title">Kami mendengarkan.</div>
-    <p style="line-height:1.8;max-width:550px">
-      Place to Hear merupakan ruang aspirasi siswa
-      yang dikelola oleh Majelis Perwakilan Kelas.
-      Sampaikan aspirasimu dengan nyaman.
-    </p>
-    <div class="note">
-      <b>Suaramu penting.</b><br>
-      Setiap aspirasi akan diterima dan ditinjau
-      oleh anggota MPK.
+ <section class="hero">
+  <div class="hero-inner">
+   <div>
+    <div class="eyebrow" data-i18n="heroEyebrow">MPK 26/27 · A SPACE FOR EVERY VOICE</div>
+    <h1 data-i18n="heroTitle">Your voice,<br><span>our place</span><br>to hear.</h1>
+    <p class="hero-copy" data-i18n="heroCopy">Share your thoughts, ideas, and aspirations with MPK 26/27.</p>
+    <div class="hero-buttons">
+     <button class="btn-primary" data-i18n="heroCTA" onclick="showSection('aspiration')">Kirim Aspirasi →</button>
+     <button class="btn-secondary" data-i18n="heroAbout" onclick="showSection('about')">Lihat Selengkapnya ↗</button>
     </div>
-  </section>
+   </div>
+   <div class="hero-art" aria-hidden="true">
+    <div class="jelly-orbit"></div><span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span><span class="bubble b4"></span>
+    <div class="jelly">🪼</div>
+   </div>
+  </div>
+  <div class="hero-note"><span class="star">⭐</span><span data-i18n="heroNote">Let's make our school better!<small>Setiap suara berarti ♡</small></span></div>
+ </section>
+ <section class="page-section">
+  <div class="section-kicker" data-i18n="homeKicker">A SPACE FOR EVERY VOICE</div>
+  <h2 class="section-heading" data-i18n="homeHeading">Listening. Acting. Growing.</h2>
+  <p class="section-intro" data-i18n="homeIntro">Place to Hear adalah ruang aspirasi siswa bersama MPK 26/27. Sampaikan pendapat, ide, kritik, keluhan, maupun apresiasimu dengan nyaman.</p>
+  <div class="feature-grid">
+   <article class="feature-card"><div class="feature-icon">💬</div><h3 data-i18n="feature1Title">Sampaikan suaramu</h3><p data-i18n="feature1Copy">Kirim aspirasi tanpa harus membuat akun siswa.</p></article>
+   <article class="feature-card"><div class="feature-icon">🫧</div><h3 data-i18n="feature2Title">Pantau di My Space</h3><p data-i18n="feature2Copy">Aspirasi tersimpan di browser yang kamu gunakan untuk mengirim.</p></article>
+   <article class="feature-card"><div class="feature-icon">🪼</div><h3 data-i18n="feature3Title">Didengar dan ditindaklanjuti</h3><p data-i18n="feature3Copy">Pengurus MPK dapat memperbarui status dan memberikan tanggapan.</p></article>
+  </div>
+ </section>
 </main>
 
-<section id="form" class="section hidden">
-  <div class="eyebrow">YOUR VOICE MATTERS</div>
-  <div class="section-title">Kirim aspirasi.</div>
-  <p>Isi formulir berikut dengan jelas dan sopan.</p>
-
-  <form id="aspirationForm">
-    <label>Nama</label>
-    <input id="senderName" maxlength="100"
-      placeholder="Nama kamu" required>
-
-    <label>Kelas</label>
-    <input id="senderClass" maxlength="50"
-      placeholder="Contoh: XI IPA 1" required>
-
-    <label>Kategori</label>
-    <select id="category" required>
-      <option value="">Pilih kategori</option>
-      <option>Fasilitas Sekolah</option>
-      <option>Pembelajaran</option>
-      <option>Ekstrakurikuler</option>
-      <option>Lingkungan Sekolah</option>
-      <option>Kegiatan Sekolah</option>
-      <option>Umum</option>
-    </select>
-
-    <label>Judul aspirasi</label>
-    <input id="title" maxlength="150"
-      placeholder="Apa yang ingin kamu sampaikan?" required>
-
-    <label>Isi aspirasi</label>
-    <textarea id="content" maxlength="5000"
-      placeholder="Ceritakan aspirasi kamu di sini..."
-      required></textarea>
-
-    <button class="primary" id="submitBtn" type="submit">
-      Kirim Aspirasi →
-    </button>
-
-    <div class="status" id="formStatus"></div>
-  </form>
+<section id="aspiration" class="page-section form-page hidden">
+ <div class="form-shell">
+  <aside class="form-aside">
+   <div class="section-kicker" style="color:var(--butter)" data-i18n="formAsideKicker">YOUR VOICE MATTERS</div>
+   <div class="aside-jelly">🪼</div>
+   <h2 data-i18n="formAsideTitle">A little voice can make a big change.</h2>
+   <p data-i18n="formAsideCopy">Ceritakan apa yang ingin kamu sampaikan. Setiap aspirasi akan masuk ke ruang dengar MPK.</p>
+   <p style="font-size:12px;color:#fff8d7" data-i18n="formAsidePrivacy">Kamu boleh mengirim dengan nama atau memilih anonim.</p>
+  </aside>
+  <div class="form-card">
+   <div class="section-kicker" data-i18n="formKicker">ASPIRATION FORM</div>
+   <h2 data-i18n="formTitle">Kirim Aspirasi</h2>
+   <p class="lead" data-i18n="formLead">Isi formulir ini dengan jelas dan sopan. Kolom bertanda opsional boleh dikosongkan.</p>
+   <form id="aspirationForm">
+    <div class="check-card">
+     <input type="checkbox" id="anonymousToggle">
+     <label for="anonymousToggle"><span data-i18n="anonymousLabel">Kirim sebagai anonim</span><small data-i18n="anonymousHint">Nama dan divisi tidak akan ditampilkan kepada MPK. Riwayat tetap dapat kamu lihat di My Space pada browser ini.</small></label>
+    </div>
+    <div id="identityFields">
+     <div class="field">
+      <label for="senderName"><span data-i18n="nameLabel">Nama lengkap</span></label>
+      <input id="senderName" type="text" maxlength="100" autocomplete="name" data-placeholder-id="Masukkan nama lengkap" data-placeholder-en="Enter your full name" placeholder="Masukkan nama lengkap">
+     </div>
+     <div class="field">
+      <label for="senderDivision"><span data-i18n="divisionLabel">Divisi</span></label>
+      <select id="senderDivision">
+       <option value="" data-id="Pilih divisi" data-en="Choose a division">Pilih divisi</option>
+       <option value="Inti" data-id="Inti" data-en="Executive Board">Inti</option>
+       <option value="Pendidikan" data-id="Pendidikan" data-en="Education">Pendidikan</option>
+       <option value="K3" data-id="K3" data-en="K3">K3</option>
+       <option value="Sosial" data-id="Sosial" data-en="Social Affairs">Sosial</option>
+       <option value="Ibadah" data-id="Ibadah" data-en="Religious Affairs">Ibadah</option>
+       <option value="Wirausaha" data-id="Wirausaha" data-en="Entrepreneurship">Wirausaha</option>
+       <option value="IT Media" data-id="IT Media" data-en="IT & Media">IT Media</option>
+       <option value="Kreatif" data-id="Kreatif" data-en="Creative">Kreatif</option>
+       <option value="Bahasa" data-id="Bahasa" data-en="Languages">Bahasa</option>
+      </select>
+     </div>
+    </div>
+    <div class="field">
+     <label for="category" data-i18n="typeLabel">Jenis aspirasi</label>
+     <select id="category" required>
+      <option value="" data-id="Pilih jenis aspirasi" data-en="Choose an aspiration type">Pilih jenis aspirasi</option>
+      <option value="Saran" data-id="💡 Saran" data-en="💡 Suggestion">💡 Saran</option>
+      <option value="Kritik" data-id="⚠️ Kritik" data-en="⚠️ Criticism">⚠️ Kritik</option>
+      <option value="Keluhan" data-id="🗣️ Keluhan" data-en="🗣️ Complaint">🗣️ Keluhan</option>
+      <option value="Ide/Usulan" data-id="✨ Ide/Usulan" data-en="✨ Idea/Proposal">✨ Ide/Usulan</option>
+      <option value="Apresiasi/Pujian" data-id="💗 Apresiasi/Pujian" data-en="💗 Appreciation/Praise">💗 Apresiasi/Pujian</option>
+      <option value="Lainnya" data-id="Lainnya" data-en="Other">Lainnya</option>
+     </select>
+    </div>
+    <div class="field">
+     <label for="addressedTo" data-i18n="addressLabel">Aspirasi ditujukan kepada</label>
+     <select id="addressedTo" required>
+      <option value="" data-id="Pilih tujuan aspirasi" data-en="Choose who this is for">Pilih tujuan aspirasi</option>
+      <option value="MPK" data-id="MPK" data-en="MPK · Student Representative Council">MPK</option>
+      <option value="OSIS" data-id="OSIS" data-en="OSIS · Student Council">OSIS</option>
+      <option value="Sekolah" data-id="Sekolah" data-en="School">Sekolah</option>
+      <option value="Guru" data-id="Guru" data-en="Teachers">Guru</option>
+      <option value="Fasilitas sekolah" data-id="Fasilitas sekolah" data-en="School facilities">Fasilitas sekolah</option>
+      <option value="Lainnya" data-id="Lainnya" data-en="Other">Lainnya</option>
+     </select>
+    </div>
+    <div class="field">
+     <label for="content" data-i18n="contentLabel">Apa yang ingin kamu sampaikan?</label>
+     <textarea id="content" maxlength="5000" required data-placeholder-id="Ceritakan aspirasi, ide, kritik, keluhan, atau apresiasimu..." data-placeholder-en="Share your aspiration, idea, criticism, complaint, or appreciation..." placeholder="Ceritakan aspirasi, ide, kritik, keluhan, atau apresiasimu..."></textarea>
+    </div>
+    <div class="field" id="contactPermissionField">
+     <span class="field-label" data-i18n="contactPermissionLabel">Apakah kamu bersedia dihubungi MPK jika diperlukan informasi lebih lanjut?</span>
+     <div class="radio-row">
+      <label class="radio-pill"><input type="radio" name="contactPermission" value="yes"> <span data-i18n="yes">Ya</span></label>
+      <label class="radio-pill"><input type="radio" name="contactPermission" value="no" checked> <span data-i18n="no">Tidak</span></label>
+     </div>
+    </div>
+    <div class="field hidden" id="contactInfoField">
+     <label for="contactInfo"><span data-i18n="contactInfoLabel">Kontak yang bisa dihubungi</span><span class="optional" data-i18n="optional">(opsional)</span></label>
+     <input id="contactInfo" type="text" maxlength="150" data-placeholder-id="WhatsApp atau akun lain" data-placeholder-en="WhatsApp or another account" placeholder="WhatsApp atau akun lain">
+    </div>
+    <button class="btn-primary form-submit" id="submitBtn" type="submit" data-i18n="submitButton">Kirim Aspirasi →</button>
+    <div id="formStatus" class="form-status" role="status" aria-live="polite"></div>
+    <p class="tracking-note" data-i18n="trackingNote">Setelah dikirim, aspirasi akan otomatis muncul di My Space pada browser/perangkat yang sama. Riwayat tidak otomatis berpindah ke browser atau perangkat lain.</p>
+   </form>
+  </div>
+ </div>
 </section>
 
-<section id="admin" class="admin-area hidden">
-  <div class="eyebrow">PRIVATE AREA</div>
-  <div class="section-title">Ruang Kerja MPK.</div>
+<section id="space" class="page-section space-page hidden">
+ <div class="section-kicker" data-i18n="spaceKicker">YOUR PERSONAL CORNER</div>
+ <h1 class="section-heading" data-i18n="spaceTitle">My Space</h1>
+ <p class="section-intro" data-i18n="spaceIntro">Di sini kamu bisa melihat aspirasi yang dikirim dari browser ini, tanpa kode pelacakan atau akun siswa.</p>
+ <div id="spaceStatus" class="form-status" role="status" aria-live="polite"></div>
+ <div id="myAspirationList"></div>
+ <p class="tracking-note" data-i18n="spacePrivacy">Privasi: My Space terhubung ke browser ini. Jika browser data dihapus atau kamu berganti perangkat/browser, riwayat mungkin tidak muncul lagi. Pada perangkat bersama, orang lain yang memakai browser ini juga dapat membuka riwayatnya.</p>
+</section>
 
+<section id="about" class="page-section about-page hidden">
+ <div class="section-kicker" data-i18n="aboutKicker">ABOUT PLACE TO HEAR</div>
+ <h1 class="section-heading" data-i18n="aboutTitle">A space for every voice.</h1>
+ <p class="section-intro" data-i18n="aboutIntro">Place to Hear adalah ruang aspirasi MPK 26/27 untuk menampung suara siswa, mendengarkan dengan terbuka, dan membantu menindaklanjuti hal yang perlu diperbaiki.</p>
+ <div class="feature-grid">
+  <article class="feature-card"><div class="feature-icon">🌊</div><h3 data-i18n="about1Title">Listening</h3><p data-i18n="about1Copy">Mendengarkan cerita dan aspirasi dengan terbuka.</p></article>
+  <article class="feature-card"><div class="feature-icon">⭐</div><h3 data-i18n="about2Title">Acting</h3><p data-i18n="about2Copy">Membantu menyampaikan aspirasi kepada pihak yang dituju.</p></article>
+  <article class="feature-card"><div class="feature-icon">🪼</div><h3 data-i18n="about3Title">Growing</h3><p data-i18n="about3Copy">Membangun lingkungan sekolah yang lebih baik bersama-sama.</p></article>
+ </div>
+</section>
+
+<section id="admin" class="admin-page hidden">
+ <div class="section-kicker" data-i18n="adminKicker">PRIVATE AREA</div>
+ <h1 class="section-heading" data-i18n="adminTitle">Ruang Kerja MPK</h1>
+ <div class="admin-panel">
   <div id="loginArea">
-    <p>Masuk menggunakan akun anggota MPK.</p>
-    <form id="loginForm">
-      <label>Email</label>
-      <input id="email" type="email" required>
-
-      <label>Password</label>
-      <input id="password" type="password" required>
-
-      <button class="primary" type="submit">Masuk</button>
-      <div class="status" id="loginStatus"></div>
-    </form>
+   <p class="section-intro" data-i18n="loginIntro">Masuk menggunakan akun resmi anggota MPK.</p>
+   <form id="loginForm" style="max-width:480px">
+    <div class="field"><label for="email" data-i18n="emailLabel">Email</label><input id="email" type="email" autocomplete="username" required></div>
+    <div class="field"><label for="password" data-i18n="passwordLabel">Password</label><input id="password" type="password" autocomplete="current-password" required></div>
+    <button class="btn-primary" type="submit" data-i18n="loginButton">Login →</button>
+    <div class="form-status" id="loginStatus" role="status"></div>
+   </form>
   </div>
-
   <div id="dashboard" class="hidden">
-    <p id="welcome"></p>
-    <button class="primary" onclick="logout()">Keluar</button>
-    <h3>Daftar Aspirasi</h3>
-    <div id="aspirationList"></div>
+   <div class="admin-toolbar"><div><div id="welcome" style="font-weight:1000"></div><p class="hint" data-i18n="adminHint">Kelola status dan tanggapan setiap aspirasi.</p></div><button class="btn-small" onclick="logout()" data-i18n="logoutButton">Keluar</button></div>
+   <h2 style="font-size:22px;margin-top:25px" data-i18n="adminListTitle">Daftar Aspirasi</h2>
+   <div id="aspirationList"></div>
   </div>
+ </div>
 </section>
 
-<footer>
-  <b>PLACE TO HEAR — MPK 26/27</b><br>
-  Ketika banyak yang bisa berbicara,
-  namun sedikit yang mendengar.
-</footer>
+<footer><div class="footer-brand">🪼 PLACE TO HEAR — MPK 26/27</div><span data-i18n="footerLine">Listening. Acting. Growing. Setiap suara berarti ♡</span><br><small>A space for every voice.</small></footer>
+
+<nav class="mobile-bottom" aria-label="Mobile navigation">
+ <button onclick="showSection('home')">⌂<br><span data-i18n="navHome">Home</span></button>
+ <button onclick="showSection('aspiration')">✉<br><span data-i18n="navAspiration">Aspirasi</span></button>
+ <button onclick="showSection('space')">♡<br><span data-i18n="navSpace">My Space</span></button>
+ <button onclick="showSection('about')">ⓘ<br><span data-i18n="navAbout">About</span></button>
+</nav>
 
 <script>
-// =====================================
-// SUPABASE CONFIGURATION
-// =====================================
-
 const SUPABASE_URL = "https://vczawoorabvhustrsfwo.supabase.co";
 const SUPABASE_KEY = "sb_publishable_fgsq2pdP5CTHfRcuG6DTXQ_5-PaZSNp";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+let currentLanguage = "id";
 
-// =====================================
-// NAVIGATION
-// =====================================
+const translations = {
+ id: {
+  navHome:"Home",navAspiration:"Aspirasi",navAbout:"About",navSpace:"My Space",navLogin:"Login ↗",
+  heroEyebrow:"MPK 26/27 · A SPACE FOR EVERY VOICE",heroTitle:'Your voice,<br><span>our place</span><br>to hear.',heroCopy:"Share your thoughts, ideas, and aspirations with MPK 26/27.",heroCTA:"Kirim Aspirasi →",heroAbout:"Lihat Selengkapnya ↗",heroNote:'Let\\'s make our school better!<small>Setiap suara berarti ♡</small>',
+  homeKicker:"A SPACE FOR EVERY VOICE",homeHeading:"Listening. Acting. Growing.",homeIntro:"Place to Hear adalah ruang aspirasi siswa bersama MPK 26/27. Sampaikan pendapat, ide, kritik, keluhan, maupun apresiasimu dengan nyaman.",
+  feature1Title:"Sampaikan suaramu",feature1Copy:"Kirim aspirasi tanpa harus membuat akun siswa.",feature2Title:"Pantau di My Space",feature2Copy:"Aspirasi tersimpan di browser yang kamu gunakan untuk mengirim.",feature3Title:"Didengar dan ditindaklanjuti",feature3Copy:"Pengurus MPK dapat memperbarui status dan memberikan tanggapan.",
+  formAsideKicker:"YOUR VOICE MATTERS",formAsideTitle:"A little voice can make a big change.",formAsideCopy:"Ceritakan apa yang ingin kamu sampaikan. Setiap aspirasi akan masuk ke ruang dengar MPK.",formAsidePrivacy:"Kamu boleh mengirim dengan nama atau memilih anonim.",
+  formKicker:"ASPIRATION FORM",formTitle:"Kirim Aspirasi",formLead:"Isi formulir ini dengan jelas dan sopan. Kolom bertanda opsional boleh dikosongkan.",
+  anonymousLabel:"Kirim sebagai anonim",anonymousHint:"Nama dan divisi tidak akan ditampilkan kepada MPK. Riwayat tetap dapat kamu lihat di My Space pada browser ini.",
+  nameLabel:"Nama lengkap",divisionLabel:"Divisi",typeLabel:"Jenis aspirasi",addressLabel:"Aspirasi ditujukan kepada",contentLabel:"Apa yang ingin kamu sampaikan?",
+  contactPermissionLabel:"Apakah kamu bersedia dihubungi MPK jika diperlukan informasi lebih lanjut?",yes:"Ya",no:"Tidak",contactInfoLabel:"Kontak yang bisa dihubungi",optional:"(opsional)",submitButton:"Kirim Aspirasi →",
+  trackingNote:"Setelah dikirim, aspirasi akan otomatis muncul di My Space pada browser/perangkat yang sama. Riwayat tidak otomatis berpindah ke browser atau perangkat lain.",
+  spaceKicker:"YOUR PERSONAL CORNER",spaceTitle:"My Space",spaceIntro:"Di sini kamu bisa melihat aspirasi yang dikirim dari browser ini, tanpa kode pelacakan atau akun siswa.",spacePrivacy:"Privasi: My Space terhubung ke browser ini. Jika browser data dihapus atau kamu berganti perangkat/browser, riwayat mungkin tidak muncul lagi. Pada perangkat bersama, orang lain yang memakai browser ini juga dapat membuka riwayatnya.",
+  aboutKicker:"ABOUT PLACE TO HEAR",aboutTitle:"A space for every voice.",aboutIntro:"Place to Hear adalah ruang aspirasi MPK 26/27 untuk menampung suara siswa, mendengarkan dengan terbuka, dan membantu menindaklanjuti hal yang perlu diperbaiki.",about1Title:"Listening",about1Copy:"Mendengarkan cerita dan aspirasi dengan terbuka.",about2Title:"Acting",about2Copy:"Membantu menyampaikan aspirasi kepada pihak yang dituju.",about3Title:"Growing",about3Copy:"Membangun lingkungan sekolah yang lebih baik bersama-sama.",
+  adminKicker:"PRIVATE AREA",adminTitle:"Ruang Kerja MPK",loginIntro:"Masuk menggunakan akun resmi anggota MPK.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",adminHint:"Kelola status dan tanggapan setiap aspirasi.",logoutButton:"Keluar",adminListTitle:"Daftar Aspirasi",footerLine:"Listening. Acting. Growing. Setiap suara berarti ♡",
+  sending:"Mengirim aspirasi...",sent:"Terima kasih! Aspirasi kamu berhasil dikirim.",sendError:"Aspirasi gagal dikirim: ",requiredIdentity:"Isi nama dan pilih divisi, atau aktifkan pilihan anonim.",trackingError:"My Space belum dapat memuat riwayat. Pastikan fungsi pelacakan Supabase sudah dipasang.",emptySpace:"Belum ada aspirasi dari browser ini.",emptyAdmin:"Belum ada aspirasi masuk.",loading:"Memuat...",loginChecking:"Memeriksa akun...",loginFailed:"Login gagal: ",profileMissing:"Profil anggota tidak ditemukan.",notAdmin:"Akun ini belum memiliki akses Admin MPK.",welcome:"Halo, ",anonymous:"Anonim",status:"Status",response:"Tanggapan MPK",noResponse:"Belum ada tanggapan dari MPK.",save:"Simpan perubahan",saved:"Perubahan berhasil disimpan.",saveError:"Gagal menyimpan perubahan: ",contact:"Kontak",contactAllowed:"Bersedia dihubungi",contactNotAllowed:"Tidak meminta dihubungi",to:"Ditujukan kepada",dateLocale:"id-ID",
+  status_new:"Baru",status_progress:"Diproses",status_done:"Selesai",status_unknown:"Status belum tersedia",trackFunctionMissing:"Fitur My Space perlu diaktifkan di Supabase terlebih dahulu."
+ },
+ en: {
+  navHome:"Home",navAspiration:"Aspirations",navAbout:"About",navSpace:"My Space",navLogin:"Login ↗",
+  heroEyebrow:"MPK 26/27 · A SPACE FOR EVERY VOICE",heroTitle:'Your voice,<br><span>our place</span><br>to hear.',heroCopy:"Share your thoughts, ideas, and aspirations with MPK 26/27.",heroCTA:"Send an Aspiration →",heroAbout:"Learn More ↗",heroNote:'Let\\'s make our school better!<small>Every voice matters ♡</small>',
+  homeKicker:"A SPACE FOR EVERY VOICE",homeHeading:"Listening. Acting. Growing.",homeIntro:"Place to Hear is an aspiration space supported by MPK 26/27. Share your thoughts, ideas, criticism, complaints, and appreciation comfortably.",
+  feature1Title:"Share your voice",feature1Copy:"Send an aspiration without creating a student account.",feature2Title:"Track in My Space",feature2Copy:"Your aspirations are saved to the browser you used to submit them.",feature3Title:"Heard and followed up",feature3Copy:"MPK members can update the status and provide a response.",
+  formAsideKicker:"YOUR VOICE MATTERS",formAsideTitle:"A little voice can make a big change.",formAsideCopy:"Tell us what you would like to share. Every submission will reach the MPK listening space.",formAsidePrivacy:"You can submit with your name or choose to remain anonymous.",
+  formKicker:"ASPIRATION FORM",formTitle:"Send an Aspiration",formLead:"Please complete this form clearly and respectfully. Fields marked optional may be left blank.",
+  anonymousLabel:"Submit anonymously",anonymousHint:"Your name and division will not be shown to MPK. You can still see the submission in My Space on this browser.",
+  nameLabel:"Full name",divisionLabel:"Division",typeLabel:"Aspiration type",addressLabel:"Who is this aspiration for?",contentLabel:"What would you like to share?",
+  contactPermissionLabel:"May MPK contact you if more information is needed?",yes:"Yes",no:"No",contactInfoLabel:"Contact information",optional:"(optional)",submitButton:"Send Aspiration →",
+  trackingNote:"After submission, your aspiration will appear automatically in My Space on the same browser/device. History does not automatically transfer to another browser or device.",
+  spaceKicker:"YOUR PERSONAL CORNER",spaceTitle:"My Space",spaceIntro:"View aspirations submitted from this browser, without a tracking code or student account.",spacePrivacy:"Privacy: My Space is linked to this browser. Clearing browser data or switching devices/browsers may make your history unavailable. On a shared device, others using this browser may also open its history.",
+  aboutKicker:"ABOUT PLACE TO HEAR",aboutTitle:"A space for every voice.",aboutIntro:"Place to Hear is the MPK 26/27 aspiration space for student voices, open listening, and following up on matters that can be improved.",about1Title:"Listening",about1Copy:"Listening openly to stories and aspirations.",about2Title:"Acting",about2Copy:"Helping bring aspirations to the relevant people.",about3Title:"Growing",about3Copy:"Building a better school environment together.",
+  adminKicker:"PRIVATE AREA",adminTitle:"MPK Workspace",loginIntro:"Sign in using an official MPK member account.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",adminHint:"Manage the status and response for each aspiration.",logoutButton:"Log out",adminListTitle:"Aspiration List",footerLine:"Listening. Acting. Growing. Every voice matters ♡",
+  sending:"Sending your aspiration...",sent:"Thank you! Your aspiration has been submitted.",sendError:"Could not submit aspiration: ",requiredIdentity:"Enter your name and choose a division, or select anonymous.",trackingError:"My Space could not load your history. Make sure the Supabase tracking function has been added.",emptySpace:"There are no aspirations from this browser yet.",emptyAdmin:"No aspirations have been submitted yet.",loading:"Loading...",loginChecking:"Checking account...",loginFailed:"Login failed: ",profileMissing:"Member profile not found.",notAdmin:"This account does not have MPK Admin access.",welcome:"Hello, ",anonymous:"Anonymous",status:"Status",response:"MPK response",noResponse:"There is no response from MPK yet.",save:"Save changes",saved:"Changes saved successfully.",saveError:"Could not save changes: ",contact:"Contact",contactAllowed:"Agreed to be contacted",contactNotAllowed:"No follow-up requested",to:"Addressed to",dateLocale:"en-US",
+  status_new:"New",status_progress:"In Progress",status_done:"Resolved",status_unknown:"Status unavailable",trackFunctionMissing:"My Space must be enabled in Supabase first."
+ }
+};
 
-function showSection(section) {
-  document.getElementById("home").classList.add("hidden");
-  document.getElementById("form").classList.add("hidden");
-  document.getElementById("admin").classList.add("hidden");
-
-  document.getElementById(section).classList.remove("hidden");
-
-  if(section === "admin") checkSession();
-
-  window.scrollTo(0, 0);
+function t(key){return translations[currentLanguage][key] || translations.id[key] || key;}
+function setLanguage(lang){
+ currentLanguage = lang === "en" ? "en" : "id";
+ document.documentElement.lang = currentLanguage;
+ document.querySelectorAll("[data-i18n]").forEach(function(el){
+  const key = el.getAttribute("data-i18n");
+  if(translations[currentLanguage][key]) el.innerHTML = translations[currentLanguage][key];
+ });
+ document.querySelectorAll("option[data-id][data-en]").forEach(function(option){
+  option.textContent = option.getAttribute(currentLanguage === "en" ? "data-en" : "data-id");
+ });
+ document.querySelectorAll("[data-placeholder-id]").forEach(function(el){
+  el.placeholder = el.getAttribute(currentLanguage === "en" ? "data-placeholder-en" : "data-placeholder-id");
+ });
+ document.getElementById("langID").classList.toggle("active", currentLanguage === "id");
+ document.getElementById("langEN").classList.toggle("active", currentLanguage === "en");
+}
+function showSection(section){
+ ["home","aspiration","space","about","admin"].forEach(function(id){
+  document.getElementById(id).classList.toggle("hidden", id !== section);
+ });
+ document.querySelectorAll(".nav-links button[data-section]").forEach(function(btn){
+  btn.classList.toggle("active", btn.getAttribute("data-section") === section);
+ });
+ window.scrollTo({top:0,behavior:"smooth"});
+ if(section === "space") loadMySpace();
+ if(section === "admin") checkSession();
 }
 
-// =====================================
-// SUBMIT ASPIRATION
-// =====================================
+function getDeviceToken(){
+ const key = "place_to_hear_device_token_v1";
+ let token = localStorage.getItem(key);
+ if(!token){
+  if(window.crypto && crypto.randomUUID) token = crypto.randomUUID() + crypto.randomUUID();
+  else {
+   const values = new Uint8Array(32);
+   crypto.getRandomValues(values);
+   token = Array.from(values).map(function(v){return v.toString(16).padStart(2,"0");}).join("");
+  }
+  localStorage.setItem(key, token);
+ }
+ return token;
+}
+async function hashDeviceToken(){
+ const token = getDeviceToken();
+ if(!window.crypto || !crypto.subtle) throw new Error("Browser ini tidak mendukung pelacakan aman. Coba gunakan browser terbaru.");
+ const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
+ return Array.from(new Uint8Array(digest)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");
+}
 
-document.getElementById("aspirationForm")
-.addEventListener("submit", async function(e) {
-  e.preventDefault();
+const anonymousToggle = document.getElementById("anonymousToggle");
+anonymousToggle.addEventListener("change", function(){
+ const isAnonymous = anonymousToggle.checked;
+ document.getElementById("identityFields").classList.toggle("hidden", isAnonymous);
+ document.getElementById("contactPermissionField").classList.toggle("hidden", isAnonymous);
+ document.getElementById("contactInfoField").classList.add("hidden");
+ document.getElementById("senderName").required = !isAnonymous;
+ document.getElementById("senderDivision").required = !isAnonymous;
+ if(isAnonymous){
+  document.getElementById("senderName").value = "";
+  document.getElementById("senderDivision").value = "";
+  document.getElementById("contactInfo").value = "";
+  document.querySelector('input[name="contactPermission"][value="no"]').checked = true;
+ } else {
+  document.getElementById("senderName").required = true;
+  document.getElementById("senderDivision").required = true;
+ }
+});
+document.querySelectorAll('input[name="contactPermission"]').forEach(function(input){
+ input.addEventListener("change",function(){
+  const show = !anonymousToggle.checked && input.checked && input.value === "yes";
+  if(input.checked) document.getElementById("contactInfoField").classList.toggle("hidden",!show);
+ });
+});
 
-  const btn = document.getElementById("submitBtn");
-  const status = document.getElementById("formStatus");
-
-  btn.disabled = true;
-  status.textContent = "Mengirim aspirasi...";
-
-  const data = {
-    sender_name: document.getElementById("senderName").value.trim(),
-    sender_class: document.getElementById("senderClass").value.trim(),
-    category: document.getElementById("category").value,
-    title: document.getElementById("title").value.trim(),
-    content: document.getElementById("content").value.trim()
+document.getElementById("aspirationForm").addEventListener("submit",async function(event){
+ event.preventDefault();
+ const button = document.getElementById("submitBtn");
+ const status = document.getElementById("formStatus");
+ const isAnonymous = anonymousToggle.checked;
+ const name = document.getElementById("senderName").value.trim();
+ const division = document.getElementById("senderDivision").value;
+ const contentText = document.getElementById("content").value.trim();
+ if(!isAnonymous && (!name || !division)){
+  status.className = "form-status error";
+  status.textContent = t("requiredIdentity");
+  return;
+ }
+ button.disabled = true;
+ status.className = "form-status";
+ status.textContent = t("sending");
+ try{
+  const deviceHash = await hashDeviceToken();
+  const contactPermission = !isAnonymous && document.querySelector('input[name="contactPermission"]:checked').value === "yes";
+  const contactInfo = contactPermission ? document.getElementById("contactInfo").value.trim() : null;
+  const titleText = contentText.length > 90 ? contentText.slice(0,87) + "..." : contentText;
+  const payload = {
+   sender_name: isAnonymous ? null : name,
+   sender_class: null,
+   sender_division: isAnonymous ? null : division,
+   category: document.getElementById("category").value,
+   addressed_to: document.getElementById("addressedTo").value,
+   title: titleText,
+   content: contentText,
+   is_anonymous: isAnonymous,
+   contact_permission: contactPermission,
+   contact_info: contactInfo || null,
+   device_token_hash: deviceHash
   };
-
-  const { error } = await db
-    .from("aspirations")
-    .insert(data);
-
-  btn.disabled = false;
-
-  if(error) {
-    status.textContent = "Gagal mengirim: " + error.message;
-    return;
-  }
-
-  status.textContent =
-    "Terima kasih! Aspirasi kamu berhasil dikirim.";
-
+  const result = await db.from("aspirations").insert(payload);
+  if(result.error) throw result.error;
   this.reset();
+  document.getElementById("senderName").required = true;
+  document.getElementById("senderDivision").required = true;
+  document.getElementById("identityFields").classList.remove("hidden");
+  document.getElementById("contactPermissionField").classList.remove("hidden");
+  document.getElementById("contactInfoField").classList.add("hidden");
+  status.className = "form-status success";
+  status.textContent = t("sent");
+ }catch(error){
+  status.className = "form-status error";
+  status.textContent = t("sendError") + (error.message || "Unknown error");
+ }finally{
+  button.disabled = false;
+ }
 });
 
-// =====================================
-// ADMIN LOGIN
-// =====================================
-
-document.getElementById("loginForm")
-.addEventListener("submit", async function(e) {
-  e.preventDefault();
-
-  const status = document.getElementById("loginStatus");
-  status.textContent = "Memeriksa akun...";
-
-  const { error } = await db.auth.signInWithPassword({
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value
-  });
-
-  if(error) {
-    status.textContent = "Login gagal: " + error.message;
-    return;
+function statusLabel(status){
+ if(status === "baru") return t("status_new");
+ if(status === "diproses") return t("status_progress");
+ if(status === "selesai") return t("status_done");
+ return t("status_unknown");
+}
+function statusClass(status){
+ if(status === "selesai") return "done";
+ if(status === "diproses") return "progress";
+ return "";
+}
+function formatDate(value){
+ try{return new Date(value).toLocaleString(t("dateLocale"),{dateStyle:"medium",timeStyle:"short"});}
+ catch(e){return "";}
+}
+function addText(parent,tag,className,text){
+ const el = document.createElement(tag);
+ if(className) el.className = className;
+ el.textContent = text == null ? "" : String(text);
+ parent.appendChild(el);
+ return el;
+}
+async function loadMySpace(){
+ const status = document.getElementById("spaceStatus");
+ const list = document.getElementById("myAspirationList");
+ status.className = "form-status";
+ status.textContent = t("loading");
+ list.replaceChildren();
+ try{
+  const deviceHash = await hashDeviceToken();
+  const result = await db.rpc("get_my_aspirations",{p_device_token_hash:deviceHash});
+  if(result.error){
+   if(result.error.code === "PGRST202" || result.error.code === "42883"){
+    throw new Error(t("trackFunctionMissing"));
+   }
+   throw result.error;
   }
+  const data = result.data || [];
+  status.textContent = "";
+  if(data.length === 0){
+   addText(list,"div","space-card",t("emptySpace"));
+   return;
+  }
+  data.forEach(function(item){
+   const card = document.createElement("article");
+   card.className = "space-card";
+   addText(card,"h3","",item.title || item.category || "Aspiration");
+   addText(card,"div","space-meta",formatDate(item.created_at) + " · " + item.category + " · " + t("to") + ": " + item.addressed_to);
+   const chip = addText(card,"span","status-chip " + statusClass(item.status),statusLabel(item.status));
+   addText(card,"p","",item.content);
+   const response = document.createElement("div");
+   response.className = "response-box";
+   const responseTitle = addText(response,"b","",t("response"));
+   addText(response,"div","",item.admin_response || t("noResponse"));
+   card.appendChild(response);
+   list.appendChild(card);
+  });
+ }catch(error){
+  status.className = "form-status error";
+  status.textContent = error.message || t("trackingError");
+ }
+}
 
-  await checkSession();
+document.getElementById("loginForm").addEventListener("submit",async function(event){
+ event.preventDefault();
+ const status = document.getElementById("loginStatus");
+ status.textContent = t("loginChecking");
+ const result = await db.auth.signInWithPassword({
+  email:document.getElementById("email").value.trim(),
+  password:document.getElementById("password").value
+ });
+ if(result.error){
+  status.textContent = t("loginFailed") + result.error.message;
+  return;
+ }
+ await checkSession();
 });
 
-async function checkSession() {
-  const { data: { user } } = await db.auth.getUser();
-
-  if(!user) {
-    document.getElementById("loginArea").classList.remove("hidden");
-    document.getElementById("dashboard").classList.add("hidden");
-    return;
-  }
-
-  const { data: profile, error } = await db
-    .from("profiles")
-    .select("full_name, display_name, access_level, custom_role")
-    .eq("id", user.id)
-    .single();
-
-  if(error || !profile) {
-    document.getElementById("loginStatus").textContent =
-      "Profil tidak ditemukan.";
-    await db.auth.signOut();
-    return;
-  }
-
-  document.getElementById("loginArea").classList.add("hidden");
-  document.getElementById("dashboard").classList.remove("hidden");
-
-  document.getElementById("welcome").textContent =
-    "Halo, " + (profile.display_name || profile.full_name || "Anggota") +
-    " · " + profile.custom_role;
-
-  await loadAspirations();
-}
-
-// =====================================
-// LOAD ASPIRATIONS
-// =====================================
-
-async function loadAspirations() {
-  const list = document.getElementById("aspirationList");
-  list.textContent = "Memuat aspirasi...";
-
-  const { data, error } = await db
-    .from("aspirations")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if(error) {
-    list.textContent = "Gagal memuat aspirasi: " + error.message;
-    return;
-  }
-
-  list.replaceChildren();
-
-  if(!data || data.length === 0) {
-    list.textContent = "Belum ada aspirasi masuk.";
-    return;
-  }
-
-  data.forEach(item => {
-    const card = document.createElement("article");
-    card.className = "item";
-
-    const heading = document.createElement("h3");
-    heading.textContent = item.title;
-
-    const meta = document.createElement("small");
-    meta.textContent =
-      item.sender_name + " · " + item.sender_class +
-      " · " + item.category;
-
-    const body = document.createElement("p");
-    body.textContent = item.content;
-
-    const status = document.createElement("small");
-    status.textContent = "Status: " + item.status;
-
-    card.append(heading, meta, body, status);
-    list.appendChild(card);
-  });
-}
-
-// =====================================
-// LOGOUT
-// =====================================
-
-async function logout() {
+async function checkSession(){
+ const loginArea = document.getElementById("loginArea");
+ const dashboard = document.getElementById("dashboard");
+ const sessionResult = await db.auth.getUser();
+ const user = sessionResult.data && sessionResult.data.user;
+ if(!user){
+  loginArea.classList.remove("hidden");
+  dashboard.classList.add("hidden");
+  return;
+ }
+ const profileResult = await db.from("profiles")
+  .select("full_name,display_name,access_level,custom_role")
+  .eq("id",user.id).single();
+ const profile = profileResult.data;
+ if(profileResult.error || !profile){
+  document.getElementById("loginStatus").textContent = t("profileMissing");
   await db.auth.signOut();
-  document.getElementById("dashboard").classList.add("hidden");
-  document.getElementById("loginArea").classList.remove("hidden");
+  return;
+ }
+ if(profile.access_level !== "owner" && profile.access_level !== "admin"){
+  document.getElementById("loginStatus").textContent = t("notAdmin");
+  await db.auth.signOut();
+  return;
+ }
+ loginArea.classList.add("hidden");
+ dashboard.classList.remove("hidden");
+ document.getElementById("welcome").textContent = t("welcome") + (profile.display_name || profile.full_name || "MPK") + " · " + (profile.custom_role || profile.access_level);
+ await loadAspirations();
 }
-
+async function loadAspirations(){
+ const list = document.getElementById("aspirationList");
+ list.textContent = t("loading");
+ const result = await db.from("aspirations")
+  .select("id,title,content,sender_name,sender_division,category,addressed_to,is_anonymous,contact_permission,contact_info,status,admin_response,created_at")
+  .order("created_at",{ascending:false});
+ if(result.error){
+  list.textContent = t("sendError") + result.error.message;
+  return;
+ }
+ list.replaceChildren();
+ const data = result.data || [];
+ if(!data.length){
+  list.textContent = t("emptyAdmin");
+  return;
+ }
+ data.forEach(function(item){
+  const card = document.createElement("article");
+  card.className = "admin-item";
+  addText(card,"h3","",item.title || item.category);
+  const who = item.is_anonymous ? t("anonymous") : (item.sender_name || "—") + (item.sender_division ? " · " + item.sender_division : "");
+  const metaText = who + " · " + item.category + " · " + t("to") + ": " + (item.addressed_to || "—") + " · " + formatDate(item.created_at);
+  addText(card,"div","admin-meta",metaText);
+  addText(card,"div","admin-body",item.content);
+  if(item.contact_permission && item.contact_info){
+   addText(card,"div","admin-meta",t("contact") + ": " + item.contact_info);
+  }else{
+   addText(card,"div","admin-meta",item.contact_permission ? t("contactAllowed") : t("contactNotAllowed"));
+  }
+  const controls = document.createElement("div");
+  controls.className = "admin-controls";
+  const statusWrap = document.createElement("div");
+  addText(statusWrap,"label","",t("status"));
+  const select = document.createElement("select");
+  [["baru",t("status_new")],["diproses",t("status_progress")],["selesai",t("status_done")]].forEach(function(pair){
+   const option = document.createElement("option");
+   option.value = pair[0]; option.textContent = pair[1]; select.appendChild(option);
+  });
+  select.value = item.status || "baru";
+  statusWrap.appendChild(select);
+  const responseWrap = document.createElement("div");
+  addText(responseWrap,"label","",t("response"));
+  const response = document.createElement("textarea");
+  response.value = item.admin_response || "";
+  responseWrap.appendChild(response);
+  const save = document.createElement("button");
+  save.className = "btn-small";
+  save.textContent = t("save");
+  save.addEventListener("click",async function(){
+   save.disabled = true;
+   const update = await db.from("aspirations").update({
+    status:select.value,
+    admin_response:response.value.trim() || null
+   }).eq("id",item.id);
+   save.disabled = false;
+   if(update.error){
+    window.alert(t("saveError") + update.error.message);
+    return;
+   }
+   window.alert(t("saved"));
+   await loadAspirations();
+  });
+  controls.append(statusWrap,responseWrap,save);
+  card.appendChild(controls);
+  list.appendChild(card);
+ });
+}
+async function logout(){
+ await db.auth.signOut();
+ document.getElementById("dashboard").classList.add("hidden");
+ document.getElementById("loginArea").classList.remove("hidden");
+ document.getElementById("loginStatus").textContent = "";
+}
+setLanguage("id");
+anonymousToggle.dispatchEvent(new Event("change"));
 </script>
 </body>
 </html>
