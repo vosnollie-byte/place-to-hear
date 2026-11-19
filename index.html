@@ -115,6 +115,35 @@ textarea{min-height:155px;resize:vertical;line-height:1.6}
 .admin-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .btn-small{border:0;border-radius:999px;background:var(--navy);color:white;padding:10px 16px;font-weight:900}
 .admin-item{background:white;border:1px solid var(--line);border-radius:17px;padding:18px;margin:15px 0}
+.team-heading{margin-top:48px}
+.team-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:22px}
+.team-card{background:var(--white);border:1px solid var(--line);border-radius:23px;padding:22px;box-shadow:0 8px 24px rgba(36,59,91,.07);display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+.team-avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(145deg,#f2d976,#c5c38f);display:grid;place-items:center;color:var(--navy);font-size:35px;margin-bottom:12px;border:4px solid white;box-shadow:0 5px 16px rgba(36,59,91,.12)}
+.team-name{font-size:19px;font-weight:1000;overflow-wrap:anywhere}
+.team-role{font-size:11px;color:var(--lapis);font-weight:1000;letter-spacing:1px;text-transform:uppercase;margin:4px 0}
+.team-division{font-size:13px;color:#69778a;min-height:22px}
+.team-chat-button{margin-top:15px;background:var(--lapis);color:white;border:0;border-radius:999px;padding:11px 21px;font-weight:1000}
+.team-loading,.team-empty{padding:22px;background:var(--white);border:1px solid var(--line);border-radius:17px;color:#68768a}
+.chat-page{max-width:930px}.chat-back{margin-bottom:22px}
+.chat-panel{background:var(--white);border:1px solid var(--line);border-radius:24px;padding:clamp(17px,3vw,28px);box-shadow:var(--shadow)}
+.chat-member-heading{display:flex;align-items:center;gap:13px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.chat-member-avatar{width:48px;height:48px;display:grid;place-items:center;border-radius:50%;background:var(--butter);font-size:24px;color:var(--navy)}
+.chat-member-heading strong,.chat-member-heading small{display:block}.chat-member-heading small{color:#718095;margin-top:3px}
+.chat-start-card{max-width:620px;margin:auto;padding:15px 0}.chat-start-card h3{margin:0 0 8px;font-size:21px}
+.chat-conversation-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.chat-messages{display:flex;flex-direction:column;gap:10px;min-height:180px;max-height:440px;overflow-y:auto;padding:15px;background:#edf4f8;border-radius:17px}
+.chat-bubble{max-width:82%;padding:11px 14px;border-radius:16px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-wrap}
+.chat-bubble.student{align-self:flex-end;background:var(--butter);border-bottom-right-radius:4px}
+.chat-bubble.admin{align-self:flex-start;background:white;border:1px solid var(--line);border-bottom-left-radius:4px}
+.chat-bubble small{display:block;font-size:10px;color:#6f7c8c;margin-top:5px}
+.chat-compose,.admin-chat-compose{display:flex;align-items:flex-end;gap:10px;margin-top:12px}
+.chat-compose textarea,.admin-chat-compose textarea{min-height:54px;flex:1}
+.student-chat-history{margin-top:35px}
+.student-chat-room{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);border-radius:14px;background:white;padding:14px;margin:9px 0;color:var(--navy)}
+.student-chat-room strong,.student-chat-room small{display:block}.student-chat-room small{color:#758197;margin-top:3px}
+.admin-chat-card{background:#f4f7fa;border:1px solid var(--line);border-radius:17px;padding:17px;margin:14px 0}
+.admin-chat-thread{display:flex;flex-direction:column;gap:8px;max-height:270px;overflow:auto;padding:10px;background:white;border-radius:13px}
+
 .admin-item h3{margin:0 0 5px;font-size:19px}
 .admin-meta{font-size:12px;color:#6b778a;line-height:1.6;margin-bottom:12px}
 .admin-body{line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
@@ -126,6 +155,7 @@ footer .footer-brand{font-size:20px;font-weight:1000}
 footer small{color:rgba(255,255,255,.7)}
 .mobile-bottom{display:none}
 @media(max-width:820px){
+ .team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  .header-inner{flex-wrap:wrap}.nav-links{order:3;width:100%;justify-content:center;overflow-x:auto}.nav-links button{white-space:nowrap;padding:9px 12px;font-size:13px}
  .hero-inner{grid-template-columns:1fr;min-height:auto;padding-top:55px;text-align:center}.hero-copy{margin:auto}.hero-buttons{justify-content:center}.hero-art{display:none}
  .hero-note{left:5%;bottom:15px}
@@ -133,6 +163,7 @@ footer small{color:rgba(255,255,255,.7)}
  .admin-controls{grid-template-columns:1fr}
 }
 @media(max-width:560px){
+ .team-grid{grid-template-columns:1fr 1fr;gap:11px}.team-card{padding:16px 11px}.team-avatar{width:72px;height:72px}.team-name{font-size:16px}.chat-compose,.admin-chat-compose{align-items:stretch;flex-direction:column}.chat-compose button,.admin-chat-compose button{width:100%}
  .header-inner{padding:11px 4%}.brand{font-size:17px}.brand-mark{font-size:25px}
  .nav-links{justify-content:flex-start}.nav-links button{padding:8px 11px}
  .nav-actions{gap:4px}.login-link{padding:8px 12px!important;font-size:12px}
@@ -322,17 +353,38 @@ footer small{color:rgba(255,255,255,.7)}
  <div class="section-kicker" data-i18n="aboutKicker">ABOUT PLACE TO HEAR</div>
  <h1 class="section-heading" data-i18n="aboutTitle">A space for every voice.</h1>
  <p class="section-intro" data-i18n="aboutIntro">Place to Hear adalah ruang aspirasi MPK 26/27 untuk menampung suara siswa, mendengarkan dengan terbuka, dan membantu menindaklanjuti hal yang perlu diperbaiki.</p>
- <div class="feature-grid">
-  <article class="feature-card"><div class="feature-icon">🌊</div><h3 data-i18n="about1Title">Listening</h3><p data-i18n="about1Copy">Mendengarkan cerita dan aspirasi dengan terbuka.</p></article>
-  <article class="feature-card"><div class="feature-icon">⭐</div><h3 data-i18n="about2Title">Acting</h3><p data-i18n="about2Copy">Membantu menyampaikan aspirasi kepada pihak yang dituju.</p></article>
-  <article class="feature-card"><div class="feature-icon"><svg class="jelly-svg feature-jelly" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Jellyfish illustration">
- <path d="M120 18C65 18 29 61 22 113c-2 17 10 32 28 32h140c18 0 30-15 28-32C211 61 175 18 120 18Z" fill="currentColor" opacity=".92"/>
- <path d="M48 111c10-39 36-67 72-72 36 5 62 33 72 72" fill="none" stroke="white" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>
- <path d="M76 149c-9 21-4 42 8 58 9 13 8 31-1 45M108 149c-5 26 5 42 2 60-2 16-13 28-9 48M139 149c8 22-1 39 7 58 6 15 20 25 16 44M170 149c12 19 7 39 20 54 8 10 8 24 4 37" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>
- <path d="M76 149c-9 21-4 42 8 58 9 13 8 31-1 45M108 149c-5 26 5 42 2 60-2 16-13 28-9 48M139 149c8 22-1 39 7 58 6 15 20 25 16 44M170 149c12 19 7 39 20 54 8 10 8 24 4 37" fill="none" stroke="white" stroke-opacity=".65" stroke-width="3" stroke-linecap="round"/>
- <circle cx="87" cy="89" r="7" fill="white" opacity=".7"/><circle cx="151" cy="72" r="5" fill="white" opacity=".6"/><circle cx="177" cy="111" r="4" fill="white" opacity=".7"/>
-</svg></div><h3 data-i18n="about3Title">Growing</h3><p data-i18n="about3Copy">Membangun lingkungan sekolah yang lebih baik bersama-sama.</p></article>
+ <div class="team-heading">
+  <div class="section-kicker" data-i18n="teamKicker">THE PEOPLE BEHIND THE PLATFORM</div>
+  <h2 class="section-heading" data-i18n="teamTitle">Meet Our MPK Team</h2>
+  <p class="section-intro" data-i18n="teamIntro">Kenali anggota MPK yang siap mendengarkan suaramu. Pilih anggota untuk memulai percakapan pribadi.</p>
  </div>
+ <div id="mpkTeamList" class="team-grid"><div class="team-loading" data-i18n="teamLoading">Memuat anggota MPK...</div></div>
+</section>
+
+<section id="chat" class="page-section chat-page hidden">
+ <button class="btn-small chat-back" onclick="showSection('about')" data-i18n="chatBack">← Kembali ke About</button>
+ <div class="section-kicker" data-i18n="chatKicker">PRIVATE CONVERSATION</div>
+ <h1 class="section-heading" data-i18n="chatTitle">Chat with MPK</h1>
+ <p class="section-intro" data-i18n="chatIntro">Mulai percakapan pribadi dengan anggota MPK yang kamu pilih.</p>
+ <div class="chat-panel">
+  <div class="chat-member-heading"><div class="chat-member-avatar">♡</div><div><strong id="chatTargetName">MPK Member</strong><small id="chatTargetDivision"></small></div></div>
+  <div id="chatStartCard" class="chat-start-card">
+   <h3 data-i18n="chatIdentityTitle">Sebelum memulai chat</h3>
+   <p class="hint" data-i18n="chatIdentityHint">Pilih apakah kamu ingin menggunakan nama atau mengirim secara anonim.</p>
+   <form id="chatStartForm">
+    <div class="check-card"><input type="checkbox" id="chatAnonymous"><label for="chatAnonymous"><span data-i18n="chatAnonymous">Mulai chat secara anonim</span><small data-i18n="chatAnonymousHint">Nama kamu tidak akan ditampilkan kepada anggota MPK.</small></label></div>
+    <div class="field" id="chatNameField"><label for="chatStudentName" data-i18n="chatNameLabel">Nama yang ingin ditampilkan</label><input id="chatStudentName" type="text" maxlength="100" data-placeholder-id="Masukkan nama atau panggilan" data-placeholder-en="Enter your name or nickname" placeholder="Masukkan nama atau panggilan"></div>
+    <button class="btn-primary" id="chatStartButton" type="submit" data-i18n="chatStart">Mulai Percakapan →</button>
+    <div id="chatStartStatus" class="form-status" role="status"></div>
+   </form>
+  </div>
+  <div id="chatConversation" class="hidden">
+   <div class="chat-conversation-toolbar"><strong data-i18n="chatMessagesTitle">Percakapan</strong><button class="btn-small" type="button" onclick="loadStudentMessages()" data-i18n="chatRefresh">Refresh</button></div>
+   <div id="studentChatMessages" class="chat-messages" aria-live="polite"></div>
+   <form id="studentChatForm" class="chat-compose"><textarea id="studentChatInput" maxlength="2000" rows="2" required data-placeholder-id="Tulis pesan..." data-placeholder-en="Write a message..." placeholder="Tulis pesan..."></textarea><button class="btn-primary" id="studentChatSend" type="submit" data-i18n="chatSend">Kirim</button></form>
+  </div>
+ </div>
+ <div class="student-chat-history"><h2 class="section-heading" style="font-size:25px" data-i18n="chatRoomsTitle">Percakapan Saya</h2><div id="studentChatRooms"><p class="hint" data-i18n="chatRoomsLoading">Memuat percakapan...</p></div></div>
 </section>
 
 <section id="admin" class="admin-page hidden">
@@ -352,6 +404,10 @@ footer small{color:rgba(255,255,255,.7)}
    <div class="admin-toolbar"><div><div id="welcome" style="font-weight:1000"></div><p class="hint" data-i18n="adminHint">Kelola status dan tanggapan setiap aspirasi.</p></div><button class="btn-small" onclick="logout()" data-i18n="logoutButton">Keluar</button></div>
    <h2 style="font-size:22px;margin-top:25px" data-i18n="adminListTitle">Daftar Aspirasi</h2>
    <div id="aspirationList"></div>
+   <div class="admin-chat-inbox">
+    <div class="admin-toolbar"><div><h2 style="font-size:22px;margin:25px 0 4px" data-i18n="adminInboxTitle">Chat Inbox</h2><p class="hint" data-i18n="adminInboxIntro">Percakapan siswa yang ditujukan kepadamu.</p></div><button class="btn-small" type="button" onclick="loadAdminChatInbox()" data-i18n="adminInboxRefresh">Refresh Inbox</button></div>
+    <div id="adminChatList"></div>
+   </div>
   </div>
  </div>
 </section>
@@ -392,7 +448,7 @@ const translations = {
   trackingNote:"Setelah dikirim, aspirasi akan otomatis muncul di My Space pada browser/perangkat yang sama. Riwayat tidak otomatis berpindah ke browser atau perangkat lain.",
   spaceKicker:"YOUR PERSONAL CORNER",spaceTitle:"My Space",spaceIntro:"Di sini kamu bisa melihat aspirasi yang dikirim dari browser ini, tanpa kode pelacakan atau akun siswa.",spacePrivacy:"Privasi: My Space terhubung ke browser ini. Jika browser data dihapus atau kamu berganti perangkat/browser, riwayat mungkin tidak muncul lagi. Pada perangkat bersama, orang lain yang memakai browser ini juga dapat membuka riwayatnya.",
   aboutKicker:"ABOUT PLACE TO HEAR",aboutTitle:"A space for every voice.",aboutIntro:"Place to Hear adalah ruang aspirasi MPK 26/27 untuk menampung suara siswa, mendengarkan dengan terbuka, dan membantu menindaklanjuti hal yang perlu diperbaiki.",about1Title:"Listening",about1Copy:"Mendengarkan cerita dan aspirasi dengan terbuka.",about2Title:"Acting",about2Copy:"Membantu menyampaikan aspirasi kepada pihak yang dituju.",about3Title:"Growing",about3Copy:"Membangun lingkungan sekolah yang lebih baik bersama-sama.",
-  adminKicker:"PRIVATE AREA",adminTitle:"Ruang Kerja MPK",loginIntro:"Masuk menggunakan akun resmi anggota MPK.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",adminHint:"Kelola status dan tanggapan setiap aspirasi.",logoutButton:"Keluar",adminListTitle:"Daftar Aspirasi",footerLine:"Listening. Acting. Growing. Setiap suara berarti ♡",
+  adminKicker:"PRIVATE AREA",adminTitle:"Ruang Kerja MPK",loginIntro:"Masuk menggunakan akun resmi anggota MPK.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",adminHint:"Kelola status dan tanggapan setiap aspirasi.",logoutButton:"Keluar",adminListTitle:"Daftar Aspirasi",footerLine:"Listening. Acting. Growing. Setiap suara berarti ♡",teamKicker:"THE PEOPLE BEHIND THE PLATFORM",teamTitle:"Meet Our MPK Team",teamIntro:"Kenali anggota MPK yang siap mendengarkan suaramu. Pilih anggota untuk memulai percakapan pribadi.",teamLoading:"Memuat anggota MPK...",teamLoadError:"Anggota MPK belum dapat dimuat: ",teamEmpty:"Belum ada profil anggota MPK yang memiliki akses Owner/Admin.",chatMe:"Chat Me ↗",chatOpen:"Buka percakapan",chatBack:"← Kembali ke About",chatKicker:"PRIVATE CONVERSATION",chatTitle:"Chat with MPK",chatIntro:"Mulai percakapan pribadi dengan anggota MPK yang kamu pilih.",chatIdentityTitle:"Sebelum memulai chat",chatIdentityHint:"Pilih apakah kamu ingin menggunakan nama atau mengirim secara anonim.",chatAnonymous:"Mulai chat secara anonim",chatAnonymousHint:"Nama kamu tidak akan ditampilkan kepada anggota MPK.",chatNameLabel:"Nama yang ingin ditampilkan",chatStart:"Mulai Percakapan →",chatStartError:"Chat belum dapat dimulai: ",chatMessagesTitle:"Percakapan",chatRefresh:"Refresh",chatSend:"Kirim",chatRoomsTitle:"Percakapan Saya",chatRoomsLoading:"Memuat percakapan...",chatRoomsEmpty:"Belum ada percakapan. Pilih anggota MPK di halaman About untuk memulai.",chatNoMessages:"Belum ada pesan. Mulai percakapanmu!",chatSendError:"Pesan gagal dikirim: ",chatStudentLabel:"Kamu",chatAdminLabel:"MPK",chatChooseMember:"Pilih anggota MPK terlebih dahulu.",adminInboxTitle:"Chat Inbox",adminInboxIntro:"Percakapan siswa yang ditujukan kepadamu.",adminInboxRefresh:"Refresh Inbox",adminInboxLoading:"Memuat pesan masuk...",adminInboxEmpty:"Belum ada percakapan masuk.",adminInboxError:"Inbox chat belum dapat dimuat: ",adminReplyPlaceholder:"Tulis balasan...",adminReply:"Balas",adminReplyError:"Balasan gagal dikirim: ",adminNewRoom:"Percakapan baru",
   sending:"Mengirim aspirasi...",sent:"Terima kasih! Aspirasi kamu berhasil dikirim.",sendError:"Aspirasi gagal dikirim: ",requiredIdentity:"Isi nama dan pilih divisi, atau aktifkan pilihan anonim.",trackingError:"My Space belum dapat memuat riwayat. Pastikan fungsi pelacakan Supabase sudah dipasang.",emptySpace:"Belum ada aspirasi dari browser ini.",emptyAdmin:"Belum ada aspirasi masuk.",loading:"Memuat...",loginChecking:"Memeriksa akun...",loginFailed:"Login gagal: ",profileMissing:"Profil anggota tidak ditemukan.",notAdmin:"Akun ini belum memiliki akses Admin MPK.",welcome:"Halo, ",anonymous:"Anonim",status:"Status",response:"Tanggapan MPK",noResponse:"Belum ada tanggapan dari MPK.",save:"Simpan perubahan",saved:"Perubahan berhasil disimpan.",saveError:"Gagal menyimpan perubahan: ",contact:"Kontak",contactAllowed:"Bersedia dihubungi",contactNotAllowed:"Tidak meminta dihubungi",to:"Ditujukan kepada",dateLocale:"id-ID",
   status_new:"Baru",status_progress:"Diproses",status_done:"Selesai",status_unknown:"Status belum tersedia",trackFunctionMissing:"Fitur My Space perlu diaktifkan di Supabase terlebih dahulu."
  },
@@ -409,7 +465,7 @@ const translations = {
   trackingNote:"After submission, your aspiration will appear automatically in My Space on the same browser/device. History does not automatically transfer to another browser or device.",
   spaceKicker:"YOUR PERSONAL CORNER",spaceTitle:"My Space",spaceIntro:"View aspirations submitted from this browser, without a tracking code or student account.",spacePrivacy:"Privacy: My Space is linked to this browser. Clearing browser data or switching devices/browsers may make your history unavailable. On a shared device, others using this browser may also open its history.",
   aboutKicker:"ABOUT PLACE TO HEAR",aboutTitle:"A space for every voice.",aboutIntro:"Place to Hear is the MPK 26/27 aspiration space for student voices, open listening, and following up on matters that can be improved.",about1Title:"Listening",about1Copy:"Listening openly to stories and aspirations.",about2Title:"Acting",about2Copy:"Helping bring aspirations to the relevant people.",about3Title:"Growing",about3Copy:"Building a better school environment together.",
-  adminKicker:"PRIVATE AREA",adminTitle:"MPK Workspace",loginIntro:"Sign in using an official MPK member account.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",adminHint:"Manage the status and response for each aspiration.",logoutButton:"Log out",adminListTitle:"Aspiration List",footerLine:"Listening. Acting. Growing. Every voice matters ♡",
+  adminKicker:"PRIVATE AREA",adminTitle:"MPK Workspace",loginIntro:"Sign in using an official MPK member account.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",adminHint:"Manage the status and response for each aspiration.",logoutButton:"Log out",adminListTitle:"Aspiration List",footerLine:"Listening. Acting. Growing. Every voice matters ♡",teamKicker:"THE PEOPLE BEHIND THE PLATFORM",teamTitle:"Meet Our MPK Team",teamIntro:"Meet the MPK members who are ready to listen. Choose a member to start a private conversation.",teamLoading:"Loading MPK members...",teamLoadError:"MPK members could not be loaded: ",teamEmpty:"No MPK profiles with Owner/Admin access were found yet.",chatMe:"Chat Me ↗",chatOpen:"Open conversation",chatBack:"← Back to About",chatKicker:"PRIVATE CONVERSATION",chatTitle:"Chat with MPK",chatIntro:"Start a private conversation with the MPK member you selected.",chatIdentityTitle:"Before starting a chat",chatIdentityHint:"Choose whether to use your name or remain anonymous.",chatAnonymous:"Start chat anonymously",chatAnonymousHint:"Your name will not be shown to the MPK member.",chatNameLabel:"Name to display",chatStart:"Start Conversation →",chatStartError:"The chat could not be started: ",chatMessagesTitle:"Conversation",chatRefresh:"Refresh",chatSend:"Send",chatRoomsTitle:"My Conversations",chatRoomsLoading:"Loading conversations...",chatRoomsEmpty:"No conversations yet. Choose an MPK member on the About page to start.",chatNoMessages:"No messages yet. Start the conversation!",chatSendError:"Message could not be sent: ",chatStudentLabel:"You",chatAdminLabel:"MPK",chatChooseMember:"Choose an MPK member first.",adminInboxTitle:"Chat Inbox",adminInboxIntro:"Student conversations assigned to you.",adminInboxRefresh:"Refresh Inbox",adminInboxLoading:"Loading incoming messages...",adminInboxEmpty:"No incoming conversations yet.",adminInboxError:"Chat inbox could not be loaded: ",adminReplyPlaceholder:"Write a reply...",adminReply:"Reply",adminReplyError:"Reply could not be sent: ",adminNewRoom:"New conversation",
   sending:"Sending your aspiration...",sent:"Thank you! Your aspiration has been submitted.",sendError:"Could not submit aspiration: ",requiredIdentity:"Enter your name and choose a division, or select anonymous.",trackingError:"My Space could not load your history. Make sure the Supabase tracking function has been added.",emptySpace:"There are no aspirations from this browser yet.",emptyAdmin:"No aspirations have been submitted yet.",loading:"Loading...",loginChecking:"Checking account...",loginFailed:"Login failed: ",profileMissing:"Member profile not found.",notAdmin:"This account does not have MPK Admin access.",welcome:"Hello, ",anonymous:"Anonymous",status:"Status",response:"MPK response",noResponse:"There is no response from MPK yet.",save:"Save changes",saved:"Changes saved successfully.",saveError:"Could not save changes: ",contact:"Contact",contactAllowed:"Agreed to be contacted",contactNotAllowed:"No follow-up requested",to:"Addressed to",dateLocale:"en-US",
   status_new:"New",status_progress:"In Progress",status_done:"Resolved",status_unknown:"Status unavailable",trackFunctionMissing:"My Space must be enabled in Supabase first."
  }
@@ -433,17 +489,134 @@ function setLanguage(lang){
  document.getElementById("langEN").classList.toggle("active", currentLanguage === "en");
 }
 function showSection(section){
- ["home","aspiration","space","about","admin"].forEach(function(id){
-  document.getElementById(id).classList.toggle("hidden", id !== section);
+ ["home","aspiration","space","about","chat","admin"].forEach(function(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle("hidden",id!==section);
  });
  document.querySelectorAll(".nav-links button[data-section]").forEach(function(btn){
-  btn.classList.toggle("active", btn.getAttribute("data-section") === section);
+  btn.classList.toggle("active",btn.getAttribute("data-section")===section);
  });
  window.scrollTo({top:0,behavior:"smooth"});
- if(section === "space") loadMySpace();
- if(section === "admin") checkSession();
+ if(section==="space") loadMySpace();
+ if(section==="about") loadMpkTeam();
+ if(section==="chat") loadStudentChatRooms();
+ if(section==="admin") checkSession();
+ if(section!=="chat"&&studentChatPollTimer){clearInterval(studentChatPollTimer);studentChatPollTimer=null;}
 }
 
+
+let selectedChatMember=null;
+let activeStudentRoomId=null;
+let activeAdminUserId=null;
+let studentChatPollTimer=null;
+
+async function loadMpkTeam(){
+ const container=document.getElementById("mpkTeamList");
+ container.replaceChildren();addText(container,"div","team-loading",t("teamLoading"));
+ const result=await db.rpc("get_public_mpk_members");
+ if(result.error){container.replaceChildren();addText(container,"div","team-empty",t("teamLoadError")+result.error.message);return;}
+ const members=result.data||[];container.replaceChildren();
+ if(!members.length){addText(container,"div","team-empty",t("teamEmpty"));return;}
+ members.forEach(function(member){
+  const card=document.createElement("article");card.className="team-card";
+  addText(card,"div","team-avatar","✦");
+  addText(card,"div","team-name",member.member_name||"MPK Member");
+  addText(card,"div","team-role",member.member_role||"Admin");
+  addText(card,"div","team-division",member.member_division||"MPK 26/27");
+  const button=document.createElement("button");button.type="button";button.className="team-chat-button";button.textContent=t("chatMe");
+  button.addEventListener("click",function(){openStudentChat(member);});
+  card.appendChild(button);container.appendChild(card);
+ });
+}
+function openStudentChat(member){
+ selectedChatMember=member;activeStudentRoomId=null;
+ document.getElementById("chatTargetName").textContent=member.member_name||"MPK Member";
+ document.getElementById("chatTargetDivision").textContent=[member.member_role,member.member_division].filter(Boolean).join(" · ");
+ document.getElementById("chatStartCard").classList.remove("hidden");
+ document.getElementById("chatConversation").classList.add("hidden");
+ document.getElementById("chatStartStatus").textContent="";
+ document.getElementById("chatStartForm").reset();
+ document.getElementById("chatNameField").classList.remove("hidden");
+ document.getElementById("chatStudentName").required=true;
+ showSection("chat");
+}
+document.getElementById("chatAnonymous").addEventListener("change",function(){
+ const anonymous=this.checked;document.getElementById("chatNameField").classList.toggle("hidden",anonymous);
+ document.getElementById("chatStudentName").required=!anonymous;if(anonymous)document.getElementById("chatStudentName").value="";
+});
+document.getElementById("chatStartForm").addEventListener("submit",async function(event){
+ event.preventDefault();
+ if(!selectedChatMember){document.getElementById("chatStartStatus").textContent=t("chatChooseMember");return;}
+ const button=document.getElementById("chatStartButton"),status=document.getElementById("chatStartStatus");
+ const anonymous=document.getElementById("chatAnonymous").checked,studentName=document.getElementById("chatStudentName").value.trim();
+ if(!anonymous&&!studentName){status.textContent=t("chatStartError")+t("chatNameLabel");return;}
+ button.disabled=true;status.textContent=t("loading");
+ try{
+  const deviceHash=await hashDeviceToken();
+  const result=await db.rpc("create_or_get_chat",{p_device_token_hash:deviceHash,p_member_id:selectedChatMember.member_id,p_student_name:anonymous?null:studentName,p_is_anonymous:anonymous});
+  if(result.error)throw result.error;
+  activeStudentRoomId=result.data;
+  document.getElementById("chatStartCard").classList.add("hidden");
+  document.getElementById("chatConversation").classList.remove("hidden");
+  await loadStudentMessages();await loadStudentChatRooms();startStudentChatPolling();
+ }catch(error){status.textContent=t("chatStartError")+(error.message||"Unknown error");}
+ finally{button.disabled=false;}
+});
+async function loadStudentChatRooms(){
+ const container=document.getElementById("studentChatRooms");if(!container)return;
+ container.replaceChildren();
+ try{
+  const deviceHash=await hashDeviceToken();
+  const result=await db.rpc("get_student_chat_rooms",{p_device_token_hash:deviceHash});
+  if(result.error)throw result.error;
+  const rooms=result.data||[];
+  if(!rooms.length){addText(container,"p","hint",t("chatRoomsEmpty"));return;}
+  rooms.forEach(function(room){
+   const button=document.createElement("button");button.type="button";button.className="student-chat-room";
+   const info=document.createElement("span");addText(info,"strong","",room.target_member_name||"MPK Member");
+   addText(info,"small","",(room.is_anonymous?t("anonymous"):room.student_name||"Student")+" · "+(room.target_division||room.target_member_role||"MPK"));
+   button.appendChild(info);addText(button,"span","status-chip",t("chatOpen"));
+   button.addEventListener("click",async function(){
+    selectedChatMember={member_id:room.target_member_id,member_name:room.target_member_name,member_role:room.target_member_role,member_division:room.target_division};
+    activeStudentRoomId=room.room_id;document.getElementById("chatTargetName").textContent=room.target_member_name||"MPK Member";
+    document.getElementById("chatTargetDivision").textContent=[room.target_member_role,room.target_division].filter(Boolean).join(" · ");
+    document.getElementById("chatStartCard").classList.add("hidden");document.getElementById("chatConversation").classList.remove("hidden");
+    await loadStudentMessages();startStudentChatPolling();
+   });
+   container.appendChild(button);
+  });
+ }catch(error){addText(container,"p","form-status error",t("chatSendError")+(error.message||"Unknown error"));}
+}
+async function loadStudentMessages(){
+ if(!activeStudentRoomId)return;
+ const container=document.getElementById("studentChatMessages");container.replaceChildren();
+ try{
+  const deviceHash=await hashDeviceToken();
+  const result=await db.rpc("get_student_chat_messages",{p_device_token_hash:deviceHash,p_room_id:activeStudentRoomId});
+  if(result.error)throw result.error;
+  const messages=result.data||[];if(!messages.length)addText(container,"p","hint",t("chatNoMessages"));
+  messages.forEach(function(message){
+   const bubble=document.createElement("div");bubble.className="chat-bubble "+(message.sender_type==="student"?"student":"admin");
+   addText(bubble,"div","",message.message_body);
+   addText(bubble,"small","",(message.sender_type==="student"?t("chatStudentLabel"):t("chatAdminLabel"))+" · "+formatDate(message.sent_at));
+   container.appendChild(bubble);
+  });
+  container.scrollTop=container.scrollHeight;
+ }catch(error){addText(container,"p","form-status error",t("chatSendError")+(error.message||"Unknown error"));}
+}
+function startStudentChatPolling(){if(studentChatPollTimer)clearInterval(studentChatPollTimer);studentChatPollTimer=setInterval(loadStudentMessages,5000);}
+document.getElementById("studentChatForm").addEventListener("submit",async function(event){
+ event.preventDefault();if(!activeStudentRoomId)return;
+ const input=document.getElementById("studentChatInput"),button=document.getElementById("studentChatSend"),body=input.value.trim();
+ if(!body)return;button.disabled=true;
+ try{
+  const deviceHash=await hashDeviceToken();
+  const result=await db.rpc("send_student_chat_message",{p_device_token_hash:deviceHash,p_room_id:activeStudentRoomId,p_body:body});
+  if(result.error)throw result.error;
+  input.value="";await loadStudentMessages();await loadStudentChatRooms();
+ }catch(error){window.alert(t("chatSendError")+(error.message||"Unknown error"));}
+ finally{button.disabled=false;}
+});
 function getDeviceToken(){
  const key = "place_to_hear_device_token_v1";
  let token = localStorage.getItem(key);
@@ -646,8 +819,47 @@ async function checkSession(){
  }
  loginArea.classList.add("hidden");
  dashboard.classList.remove("hidden");
+ activeAdminUserId = user.id;
  document.getElementById("welcome").textContent = t("welcome") + (profile.display_name || profile.full_name || "MPK") + " · " + (profile.custom_role || profile.access_level);
  await loadAspirations();
+ await loadAdminChatInbox();
+}
+
+async function loadAdminChatInbox(){
+ const list=document.getElementById("adminChatList");if(!list||!activeAdminUserId)return;
+ list.replaceChildren();addText(list,"p","hint",t("adminInboxLoading"));
+ const roomsResult=await db.from("chat_rooms").select("id,member_id,student_name,is_anonymous,last_message_at,created_at").order("last_message_at",{ascending:false});
+ if(roomsResult.error){list.replaceChildren();addText(list,"p","form-status error",t("adminInboxError")+roomsResult.error.message);return;}
+ const rooms=roomsResult.data||[];list.replaceChildren();
+ if(!rooms.length){addText(list,"p","hint",t("adminInboxEmpty"));return;}
+ for(const room of rooms){
+  const card=document.createElement("article");card.className="admin-chat-card";
+  const title=document.createElement("div");addText(title,"strong","",room.is_anonymous?t("anonymous"):(room.student_name||"Student"));
+  addText(title,"small","admin-meta",t("adminNewRoom")+" · "+formatDate(room.created_at));card.appendChild(title);
+  const thread=document.createElement("div");thread.className="admin-chat-thread";
+  const messagesResult=await db.from("chat_messages").select("id,sender_type,message_text,created_at").eq("room_id",room.id).order("created_at",{ascending:true});
+  if(messagesResult.error)addText(thread,"p","form-status error",messagesResult.error.message);
+  else{
+   const messages=messagesResult.data||[];
+   messages.forEach(function(message){
+    const bubble=document.createElement("div");bubble.className="chat-bubble "+(message.sender_type==="admin"?"admin":"student");
+    addText(bubble,"div","",message.message_text);
+    addText(bubble,"small","",(message.sender_type==="admin"?t("chatAdminLabel"):t("chatStudentLabel"))+" · "+formatDate(message.created_at));thread.appendChild(bubble);
+   });
+  }
+  card.appendChild(thread);
+  const form=document.createElement("form");form.className="admin-chat-compose";
+  const input=document.createElement("textarea");input.maxLength=2000;input.required=true;input.placeholder=t("adminReplyPlaceholder");
+  const button=document.createElement("button");button.type="submit";button.className="btn-small";button.textContent=t("adminReply");
+  form.append(input,button);
+  form.addEventListener("submit",async function(event){
+   event.preventDefault();const body=input.value.trim();if(!body)return;button.disabled=true;
+   const sendResult=await db.from("chat_messages").insert({room_id:room.id,sender_type:"admin",sender_user_id:activeAdminUserId,message_text:body});
+   button.disabled=false;if(sendResult.error){window.alert(t("adminReplyError")+sendResult.error.message);return;}
+   await loadAdminChatInbox();
+  });
+  card.appendChild(form);list.appendChild(card);
+ }
 }
 async function loadAspirations(){
  const list = document.getElementById("aspirationList");
