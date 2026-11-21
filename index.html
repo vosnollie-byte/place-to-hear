@@ -184,6 +184,22 @@ footer small{color:rgba(255,255,255,.7)}
  .mobile-bottom button{border:0;background:transparent;color:var(--navy);font-size:11px;font-weight:900;padding:5px 8px}
  body{padding-bottom:58px}
 }
+
+.aspiration-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;max-width:1100px;margin:8px auto 36px;padding:0 3px}
+.aspiration-choice-card{background:rgba(255,255,255,.94);border:1px solid rgba(45,89,151,.16);border-radius:24px;padding:28px;box-shadow:0 14px 34px rgba(36,59,91,.08);display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-height:250px}
+.aspiration-choice-card h2{margin:0;color:var(--navy);font-size:clamp(22px,3vw,30px)}
+.aspiration-choice-card p{margin:0 0 8px;line-height:1.65;color:var(--navy);flex:1}
+.aspiration-choice-card.monthly{background:linear-gradient(145deg,#fff9e8,#f4f1df);border-color:rgba(197,195,143,.55)}
+.aspiration-card-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.agenda-status-chip{display:inline-flex;align-items:center;border-radius:999px;padding:6px 11px;font-size:10px;font-weight:900;letter-spacing:.07em;background:#e7e4d5;color:#625f4c;white-space:nowrap}
+.agenda-status-chip.open{background:#e0f0e5;color:#28623d}
+.agenda-status-chip.scheduled{background:#e5edf7;color:#2d5997}
+.aspiration-choice-card button:disabled{opacity:.62;cursor:not-allowed;filter:saturate(.55)}
+.monthly-agenda-admin{margin:26px 0;padding:24px;background:rgba(247,245,238,.9);border:1px solid rgba(45,89,151,.16);border-radius:22px}
+.monthly-agenda-admin h2{margin:5px 0 8px;color:var(--navy);font-size:22px}
+.monthly-agenda-admin .profile-edit-form{max-width:650px}
+.monthly-agenda-summary{margin:16px 0;padding:13px 15px;border-radius:14px;background:#e8eff5;color:#243b5b;font-size:13px;line-height:1.6}
+@media(max-width:760px){.aspiration-choices{grid-template-columns:1fr;gap:14px;padding:0 16px}.aspiration-choice-card{padding:22px;min-height:220px}.monthly-agenda-admin{padding:18px 15px}}
 </style>
 </head>
 <body>
@@ -256,7 +272,24 @@ footer small{color:rgba(255,255,255,.7)}
 </main>
 
 <section id="aspiration" class="page-section form-page hidden">
- <div class="form-shell">
+ <div id="aspirationChooser" class="aspiration-choices">
+  <article class="aspiration-choice-card daily">
+   <div class="section-kicker" data-i18n="dailyAspirationKicker">ANYTIME · OPEN</div>
+   <h2 data-i18n="dailyAspirationTitle">Aspirasi Harian</h2>
+   <p data-i18n="dailyAspirationCopy">Punya ide, saran, kritik, atau cerita? Sampaikan kapan saja.</p>
+   <button class="btn-primary" type="button" onclick="openAspirationForm('daily')" data-i18n="dailyAspirationButton">Kirim Aspirasi Harian →</button>
+  </article>
+  <article class="aspiration-choice-card monthly">
+   <div class="aspiration-card-top">
+    <div class="section-kicker" data-i18n="monthlyAspirationKicker">MONTHLY AGENDA</div>
+    <span id="monthlyAgendaStatusChip" class="agenda-status-chip">DITUTUP</span>
+   </div>
+   <h2 id="monthlyAgendaStudentTitle" data-i18n="monthlyAspirationTitle">Aspirasi Wajib Bulanan</h2>
+   <p id="monthlyAgendaStudentMessage" data-i18n="monthlyAspirationClosed">Hi! ♡ Tunggu agenda Aspirasi Wajib berikutnya, yaaa. See you next month! 🪼</p>
+   <button class="btn-primary" id="monthlyAspirationButton" type="button" onclick="openAspirationForm('monthly')" disabled data-i18n="monthlyAspirationClosedButton">Aspirasi Wajib · Ditutup</button>
+  </article>
+ </div>
+ <div class="form-shell hidden" id="aspirationFormShell">
   <aside class="form-aside">
    <div class="section-kicker" style="color:var(--butter)" data-i18n="formAsideKicker">YOUR VOICE MATTERS</div>
    <div class="aside-jelly"><svg class="jelly-svg aside-jelly-svg" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Jellyfish illustration">
@@ -271,9 +304,10 @@ footer small{color:rgba(255,255,255,.7)}
    <p style="font-size:12px;color:#fff8d7" data-i18n="formAsidePrivacy">Kamu boleh mengirim dengan nama atau memilih anonim.</p>
   </aside>
   <div class="form-card">
-   <div class="section-kicker" data-i18n="formKicker">ASPIRATION FORM</div>
-   <h2 data-i18n="formTitle">Kirim Aspirasi</h2>
-   <p class="lead" data-i18n="formLead">Isi formulir ini dengan jelas dan sopan. Kolom bertanda opsional boleh dikosongkan.</p>
+   <button class="btn-small" type="button" onclick="backToAspirationChoices()" data-i18n="aspirationBack">← Kembali ke pilihan aspirasi</button>
+   <div class="section-kicker" id="aspirationFormKicker" data-i18n="formKicker">ASPIRATION FORM</div>
+   <h2 id="formTitle" data-i18n="formTitle">Kirim Aspirasi</h2>
+   <p id="formLead" class="lead" data-i18n="formLead">Isi formulir ini dengan jelas dan sopan. Kolom bertanda opsional boleh dikosongkan.</p>
    <form id="aspirationForm">
     <div class="check-card">
      <input type="checkbox" id="anonymousToggle">
@@ -459,6 +493,20 @@ footer small{color:rgba(255,255,255,.7)}
      </form>
     </div>
    </div>
+   <section class="monthly-agenda-admin">
+    <div class="section-kicker" data-i18n="monthlyAdminKicker">MONTHLY ASPIRATION CONTROL</div>
+    <h2 data-i18n="monthlyAdminTitle">Jadwal Aspirasi Wajib Bulanan</h2>
+    <p class="hint" data-i18n="monthlyAdminIntro">Atur satu agenda Aspirasi Wajib. Website akan membuka dan menutup formulir otomatis sesuai jadwal.</p>
+    <div id="monthlyAgendaCurrentSummary" class="monthly-agenda-summary" aria-live="polite">Memuat jadwal...</div>
+    <form id="monthlyAgendaForm" class="profile-edit-form">
+     <div class="field"><label for="monthlyAgendaTitle" data-i18n="monthlyAdminAgendaName">Nama agenda</label><input id="monthlyAgendaTitle" type="text" maxlength="120" value="Aspirasi Wajib Bulanan" required></div>
+     <div class="field"><label for="monthlyAgendaDescription" data-i18n="monthlyAdminDescription">Pesan / keterangan (opsional)</label><textarea id="monthlyAgendaDescription" rows="2" maxlength="500" data-placeholder-id="Contoh: Sampaikan aspirasi untuk evaluasi bulan ini." data-placeholder-en="Example: Share your aspirations for this month's review." placeholder="Contoh: Sampaikan aspirasi untuk evaluasi bulan ini."></textarea></div>
+     <div class="field"><label for="monthlyAgendaStart" data-i18n="monthlyAdminStart">Mulai dibuka</label><input id="monthlyAgendaStart" type="datetime-local" required></div>
+     <div class="field"><label for="monthlyAgendaEnd" data-i18n="monthlyAdminEnd">Ditutup pada</label><input id="monthlyAgendaEnd" type="datetime-local" required></div>
+     <button class="btn-primary" id="monthlyAgendaSaveButton" type="submit" data-i18n="monthlyAdminSave">Simpan Jadwal →</button>
+     <div id="monthlyAgendaAdminStatus" class="form-status" role="status" aria-live="polite"></div>
+    </form>
+   </section>
    <h2 style="font-size:22px;margin-top:25px" data-i18n="adminListTitle">Daftar Aspirasi</h2>
    <div id="aspirationList"></div>
    <div class="admin-chat-inbox">
@@ -499,7 +547,7 @@ const translations = {
   homeKicker:"A SPACE FOR EVERY VOICE",homeHeading:"Listening. Acting. Growing.",homeIntro:"Place to Hear adalah ruang aspirasi siswa bersama MPK 26/27. Sampaikan pendapat, ide, kritik, keluhan, maupun apresiasimu dengan nyaman.",
   feature1Title:"Sampaikan suaramu",feature1Copy:"Kirim aspirasi tanpa harus membuat akun siswa.",feature2Title:"Pantau di My Space",feature2Copy:"Aspirasi tersimpan di browser yang kamu gunakan untuk mengirim.",feature3Title:"Didengar dan ditindaklanjuti",feature3Copy:"Pengurus MPK dapat memperbarui status dan memberikan tanggapan.",
   formAsideKicker:"YOUR VOICE MATTERS",formAsideTitle:"A little voice can make a big change.",formAsideCopy:"Ceritakan apa yang ingin kamu sampaikan. Setiap aspirasi akan masuk ke ruang dengar MPK.",formAsidePrivacy:"Kamu boleh mengirim dengan nama atau memilih anonim.",
-  formKicker:"ASPIRATION FORM",formTitle:"Kirim Aspirasi",formLead:"Isi formulir ini dengan jelas dan sopan. Kolom bertanda opsional boleh dikosongkan.",
+  dailyAspirationKicker:"ANYTIME · OPEN",dailyAspirationTitle:"Aspirasi Harian",dailyAspirationCopy:"Punya ide, saran, kritik, atau cerita? Sampaikan kapan saja.",dailyAspirationButton:"Kirim Aspirasi Harian →",monthlyAspirationKicker:"MONTHLY AGENDA",monthlyAspirationTitle:"Aspirasi Wajib Bulanan",monthlyAspirationClosed:"Hi! ♡ Tunggu agenda Aspirasi Wajib berikutnya, yaaa. See you next month! 🪼",monthlyAspirationFuture:"Agenda berikutnya dibuka pada ",monthlyAspirationOpen:"Agenda Aspirasi Wajib sedang dibuka! Yuk, sampaikan suaramu.",monthlyAspirationOpenButton:"Isi Aspirasi Wajib →",monthlyAspirationClosedButton:"Aspirasi Wajib · Ditutup",monthlyAspirationScheduledButton:"Aspirasi Wajib · Belum Dibuka",aspirationBack:"← Kembali ke pilihan aspirasi",dailyFormKicker:"DAILY ASPIRATION",dailyFormTitle:"Kirim Aspirasi Harian",dailyFormLead:"Formulir ini selalu terbuka. Sampaikan aspirasi kapan saja.",monthlyFormKicker:"MONTHLY REQUIRED ASPIRATION",monthlyFormTitle:"Aspirasi Wajib Bulanan",monthlyFormLead:"Isi formulir agenda bulanan yang sedang berlangsung.",monthlyClosedSubmit:"Agenda Aspirasi Wajib sudah ditutup atau belum dibuka.",monthlyAdminKicker:"MONTHLY ASPIRATION CONTROL",monthlyAdminTitle:"Jadwal Aspirasi Wajib Bulanan",monthlyAdminIntro:"Atur satu agenda Aspirasi Wajib. Website akan membuka dan menutup formulir otomatis sesuai jadwal.",monthlyAdminAgendaName:"Nama agenda",monthlyAdminDescription:"Pesan / keterangan (opsional)",monthlyAdminStart:"Mulai dibuka",monthlyAdminEnd:"Ditutup pada",monthlyAdminSave:"Simpan Jadwal →",monthlyAdminSaving:"Menyimpan jadwal...",monthlyAdminSaved:"Jadwal berhasil disimpan. Tampilan siswa akan mengikuti waktu yang ditentukan.",monthlyAdminError:"Jadwal gagal disimpan: ",monthlyAdminNoAgenda:"Belum ada agenda Aspirasi Wajib yang dijadwalkan.",monthlyAdminCurrent:"Agenda saat ini: ",monthlyAdminStarts:"Mulai: ",monthlyAdminEnds:"Ditutup: ",monthlyAdminOpen:"TERBUKA",monthlyAdminScheduled:"TERJADWAL",monthlyAdminClosed:"DITUTUP",monthlyAdminSetupNeeded:"Jalankan SQL setup Aspirasi Wajib Bulanan terlebih dahulu di Supabase.",formKicker:"ASPIRATION FORM",formTitle:"Kirim Aspirasi",formLead:"Isi formulir ini dengan jelas dan sopan. Kolom bertanda opsional boleh dikosongkan.",
   anonymousLabel:"Kirim sebagai anonim",anonymousHint:"Nama dan divisi tidak akan ditampilkan kepada MPK. Riwayat tetap dapat kamu lihat di My Space pada browser ini.",
   nameLabel:"Nama lengkap",divisionLabel:"Divisi",typeLabel:"Jenis aspirasi",addressLabel:"Aspirasi ditujukan kepada",contentLabel:"Apa yang ingin kamu sampaikan?",
   contactPermissionLabel:"Apakah kamu bersedia dihubungi MPK jika diperlukan informasi lebih lanjut?",yes:"Ya",no:"Tidak",contactInfoLabel:"Kontak yang bisa dihubungi",optional:"(opsional)",submitButton:"Kirim Aspirasi →",
@@ -516,7 +564,7 @@ const translations = {
   homeKicker:"A SPACE FOR EVERY VOICE",homeHeading:"Listening. Acting. Growing.",homeIntro:"Place to Hear is an aspiration space supported by MPK 26/27. Share your thoughts, ideas, criticism, complaints, and appreciation comfortably.",
   feature1Title:"Share your voice",feature1Copy:"Send an aspiration without creating a student account.",feature2Title:"Track in My Space",feature2Copy:"Your aspirations are saved to the browser you used to submit them.",feature3Title:"Heard and followed up",feature3Copy:"MPK members can update the status and provide a response.",
   formAsideKicker:"YOUR VOICE MATTERS",formAsideTitle:"A little voice can make a big change.",formAsideCopy:"Tell us what you would like to share. Every submission will reach the MPK listening space.",formAsidePrivacy:"You can submit with your name or choose to remain anonymous.",
-  formKicker:"ASPIRATION FORM",formTitle:"Send an Aspiration",formLead:"Please complete this form clearly and respectfully. Fields marked optional may be left blank.",
+  dailyAspirationKicker:"ANYTIME · OPEN",dailyAspirationTitle:"Daily Aspirations",dailyAspirationCopy:"Have an idea, suggestion, criticism, or something to share? Send it anytime.",dailyAspirationButton:"Send a Daily Aspiration →",monthlyAspirationKicker:"MONTHLY AGENDA",monthlyAspirationTitle:"Monthly Required Aspiration",monthlyAspirationClosed:"Hi! ♡ Please wait for the next Required Aspiration agenda. See you next month! 🪼",monthlyAspirationFuture:"The next agenda opens on ",monthlyAspirationOpen:"The Required Aspiration agenda is now open! Share your voice.",monthlyAspirationOpenButton:"Fill Required Aspiration →",monthlyAspirationClosedButton:"Required Aspiration · Closed",monthlyAspirationScheduledButton:"Required Aspiration · Not Open Yet",aspirationBack:"← Back to aspiration choices",dailyFormKicker:"DAILY ASPIRATION",dailyFormTitle:"Send a Daily Aspiration",dailyFormLead:"This form is always open. Share an aspiration anytime.",monthlyFormKicker:"MONTHLY REQUIRED ASPIRATION",monthlyFormTitle:"Monthly Required Aspiration",monthlyFormLead:"Complete the form for the currently active monthly agenda.",monthlyClosedSubmit:"The Required Aspiration agenda is not open or has already closed.",monthlyAdminKicker:"MONTHLY ASPIRATION CONTROL",monthlyAdminTitle:"Monthly Required Aspiration Schedule",monthlyAdminIntro:"Manage one Required Aspiration agenda. The website will open and close the form automatically based on its schedule.",monthlyAdminAgendaName:"Agenda name",monthlyAdminDescription:"Message / description (optional)",monthlyAdminStart:"Opening date and time",monthlyAdminEnd:"Closing date and time",monthlyAdminSave:"Save Schedule →",monthlyAdminSaving:"Saving schedule...",monthlyAdminSaved:"Schedule saved. The student view will follow the selected times.",monthlyAdminError:"Could not save schedule: ",monthlyAdminNoAgenda:"No Required Aspiration agenda has been scheduled yet.",monthlyAdminCurrent:"Current agenda: ",monthlyAdminStarts:"Opens: ",monthlyAdminEnds:"Closes: ",monthlyAdminOpen:"OPEN",monthlyAdminScheduled:"SCHEDULED",monthlyAdminClosed:"CLOSED",monthlyAdminSetupNeeded:"Run the Monthly Required Aspiration setup SQL in Supabase first.",formKicker:"ASPIRATION FORM",formTitle:"Send an Aspiration",formLead:"Please complete this form clearly and respectfully. Fields marked optional may be left blank.",
   anonymousLabel:"Submit anonymously",anonymousHint:"Your name and division will not be shown to MPK. You can still see the submission in My Space on this browser.",
   nameLabel:"Full name",divisionLabel:"Division",typeLabel:"Aspiration type",addressLabel:"Who is this aspiration for?",contentLabel:"What would you like to share?",
   contactPermissionLabel:"May MPK contact you if more information is needed?",yes:"Yes",no:"No",contactInfoLabel:"Contact information",optional:"(optional)",submitButton:"Send Aspiration →",
@@ -546,6 +594,81 @@ function setLanguage(lang){
  document.getElementById("langID").classList.toggle("active", currentLanguage === "id");
  document.getElementById("langEN").classList.toggle("active", currentLanguage === "en");
 }
+let selectedAspirationMode = "daily";
+let currentMonthlyAgenda = null;
+let monthlyAgendaLoadError = null;
+let monthlyScheduleFormDirty = false;
+function dateTimeLocalValue(value){
+ if(!value) return "";
+ const date=new Date(value);
+ if(Number.isNaN(date.getTime())) return "";
+ return new Date(date.getTime()-date.getTimezoneOffset()*60000).toISOString().slice(0,16);
+}
+function monthlyAgendaState(){
+ if(!currentMonthlyAgenda) return "closed";
+ const now=Date.now(),start=new Date(currentMonthlyAgenda.starts_at).getTime(),end=new Date(currentMonthlyAgenda.ends_at).getTime();
+ if(now<start) return "scheduled";
+ if(now>=start&&now<end) return "open";
+ return "closed";
+}
+function renderMonthlyAgendaCard(){
+ const chip=document.getElementById("monthlyAgendaStatusChip"),button=document.getElementById("monthlyAspirationButton");
+ const title=document.getElementById("monthlyAgendaStudentTitle"),message=document.getElementById("monthlyAgendaStudentMessage");
+ if(!chip||!button||!title||!message)return;
+ if(monthlyAgendaLoadError){
+  chip.className="agenda-status-chip";chip.textContent=t("monthlyAdminClosed");title.textContent=t("monthlyAspirationTitle");
+  message.textContent=t("monthlyAdminSetupNeeded");button.disabled=true;button.textContent=t("monthlyAspirationClosedButton");return;
+ }
+ const state=monthlyAgendaState();
+ title.textContent=currentMonthlyAgenda?currentMonthlyAgenda.title:t("monthlyAspirationTitle");
+ if(state==="open"){
+  chip.className="agenda-status-chip open";chip.textContent=t("monthlyAdminOpen");
+  message.textContent=currentMonthlyAgenda.description||t("monthlyAspirationOpen");button.disabled=false;button.textContent=t("monthlyAspirationOpenButton");
+ }else if(state==="scheduled"){
+  chip.className="agenda-status-chip scheduled";chip.textContent=t("monthlyAdminScheduled");
+  message.textContent=t("monthlyAspirationFuture")+formatDate(currentMonthlyAgenda.starts_at);button.disabled=true;button.textContent=t("monthlyAspirationScheduledButton");
+ }else{
+  chip.className="agenda-status-chip";chip.textContent=t("monthlyAdminClosed");
+  message.textContent=t("monthlyAspirationClosed");button.disabled=true;button.textContent=t("monthlyAspirationClosedButton");
+ }
+}
+async function loadMonthlyAgenda(){
+ const summary=document.getElementById("monthlyAgendaCurrentSummary");
+ const result=await db.from("monthly_aspiration_agendas").select("id,title,description,starts_at,ends_at,is_current").eq("is_current",true).maybeSingle();
+ if(result.error){
+  monthlyAgendaLoadError=result.error;currentMonthlyAgenda=null;
+  if(summary)summary.textContent=t("monthlyAdminSetupNeeded")+" "+result.error.message;
+  renderMonthlyAgendaCard();return;
+ }
+ monthlyAgendaLoadError=null;currentMonthlyAgenda=result.data||null;renderMonthlyAgendaCard();
+ if(summary){
+  if(!currentMonthlyAgenda)summary.textContent=t("monthlyAdminNoAgenda");
+  else{
+   const state=monthlyAgendaState(),label=state==="open"?t("monthlyAdminOpen"):(state==="scheduled"?t("monthlyAdminScheduled"):t("monthlyAdminClosed"));
+   summary.textContent=t("monthlyAdminCurrent")+currentMonthlyAgenda.title+" · "+label+" · "+t("monthlyAdminStarts")+formatDate(currentMonthlyAgenda.starts_at)+" · "+t("monthlyAdminEnds")+formatDate(currentMonthlyAgenda.ends_at);
+  }
+ }
+ if(!monthlyScheduleFormDirty&&currentMonthlyAgenda){
+  document.getElementById("monthlyAgendaTitle").value=currentMonthlyAgenda.title||"Aspirasi Wajib Bulanan";
+  document.getElementById("monthlyAgendaDescription").value=currentMonthlyAgenda.description||"";
+  document.getElementById("monthlyAgendaStart").value=dateTimeLocalValue(currentMonthlyAgenda.starts_at);
+  document.getElementById("monthlyAgendaEnd").value=dateTimeLocalValue(currentMonthlyAgenda.ends_at);
+ }
+}
+function openAspirationForm(mode){
+ if(mode==="monthly"&&monthlyAgendaState()!=="open"){renderMonthlyAgendaCard();return;}
+ selectedAspirationMode=mode==="monthly"?"monthly":"daily";
+ document.getElementById("aspirationChooser").classList.add("hidden");
+ document.getElementById("aspirationFormShell").classList.remove("hidden");
+ document.getElementById("aspirationFormKicker").textContent=selectedAspirationMode==="monthly"?t("monthlyFormKicker"):t("dailyFormKicker");
+ document.getElementById("formTitle").textContent=selectedAspirationMode==="monthly"?(currentMonthlyAgenda.title||t("monthlyFormTitle")):t("dailyFormTitle");
+ document.getElementById("formLead").textContent=selectedAspirationMode==="monthly"?(currentMonthlyAgenda.description||t("monthlyFormLead")):t("dailyFormLead");
+}
+function backToAspirationChoices(){
+ document.getElementById("aspirationForm").reset();anonymousToggle.dispatchEvent(new Event("change"));
+ selectedAspirationMode="daily";document.getElementById("aspirationFormShell").classList.add("hidden");
+ document.getElementById("aspirationChooser").classList.remove("hidden");loadMonthlyAgenda();
+}
 function showSection(section){
  ["home","aspiration","space","about","chat","admin"].forEach(function(id){
   const el=document.getElementById(id);
@@ -556,6 +679,11 @@ function showSection(section){
  });
  window.scrollTo({top:0,behavior:"smooth"});
  if(section==="space") loadMySpace();
+  if(section==="aspiration"){
+   document.getElementById("aspirationChooser").classList.remove("hidden");
+   document.getElementById("aspirationFormShell").classList.add("hidden");
+   loadMonthlyAgenda();
+  }
  if(section==="about") loadMpkTeam();
  if(section==="chat") loadStudentChatRooms();
  if(section==="admin") checkSession();
@@ -740,6 +868,26 @@ document.querySelectorAll('input[name="contactPermission"]').forEach(function(in
  });
 });
 
+["monthlyAgendaStart","monthlyAgendaEnd","monthlyAgendaTitle","monthlyAgendaDescription"].forEach(function(id){
+ document.getElementById(id).addEventListener("input",function(){monthlyScheduleFormDirty=true;});
+});
+document.getElementById("monthlyAgendaForm").addEventListener("submit",async function(event){
+ event.preventDefault();
+ const title=document.getElementById("monthlyAgendaTitle").value.trim(),description=document.getElementById("monthlyAgendaDescription").value.trim();
+ const startValue=document.getElementById("monthlyAgendaStart").value,endValue=document.getElementById("monthlyAgendaEnd").value;
+ const startDate=new Date(startValue),endDate=new Date(endValue),button=document.getElementById("monthlyAgendaSaveButton"),status=document.getElementById("monthlyAgendaAdminStatus");
+ if(!title||!startValue||!endValue||Number.isNaN(startDate.getTime())||Number.isNaN(endDate.getTime())||endDate<=startDate){
+  status.className="form-status error";status.textContent=t("monthlyAdminError")+"Pastikan nama agenda dan waktu valid, serta waktu penutupan setelah waktu pembukaan.";return;
+ }
+ button.disabled=true;status.className="form-status";status.textContent=t("monthlyAdminSaving");
+ try{
+  const result=await db.rpc("save_monthly_aspiration_agenda",{p_title:title,p_description:description||null,p_starts_at:startDate.toISOString(),p_ends_at:endDate.toISOString()});
+  if(result.error)throw result.error;
+  monthlyScheduleFormDirty=false;status.className="form-status success";status.textContent=t("monthlyAdminSaved");await loadMonthlyAgenda();
+ }catch(error){status.className="form-status error";status.textContent=t("monthlyAdminError")+(error.message||"Unknown error");}
+ finally{button.disabled=false;}
+});
+setInterval(function(){if(!monthlyAgendaLoadError&&currentMonthlyAgenda)renderMonthlyAgendaCard();},60000);
 document.getElementById("aspirationForm").addEventListener("submit",async function(event){
  event.preventDefault();
  const button = document.getElementById("submitBtn");
@@ -748,6 +896,9 @@ document.getElementById("aspirationForm").addEventListener("submit",async functi
  const name = document.getElementById("senderName").value.trim();
  const division = document.getElementById("senderDivision").value;
  const contentText = document.getElementById("content").value.trim();
+ if(selectedAspirationMode==="monthly"&&monthlyAgendaState()!=="open"){
+  status.className="form-status error";status.textContent=t("monthlyClosedSubmit");await loadMonthlyAgenda();return;
+ }
  if(!isAnonymous && (!name || !division)){
   status.className = "form-status error";
   status.textContent = t("requiredIdentity");
@@ -772,7 +923,9 @@ document.getElementById("aspirationForm").addEventListener("submit",async functi
    is_anonymous: isAnonymous,
    contact_permission: contactPermission,
    contact_info: contactInfo || null,
-   device_token_hash: deviceHash
+   device_token_hash: deviceHash,
+   aspiration_type: selectedAspirationMode,
+   monthly_agenda_id: selectedAspirationMode==="monthly"&&currentMonthlyAgenda?currentMonthlyAgenda.id:null
   };
   const result = await db.from("aspirations").insert(payload);
   if(result.error) throw result.error;
@@ -1058,7 +1211,8 @@ async function checkSession(){
  document.getElementById("profileDisplayName").value = profile.display_name || profile.full_name || "";
  document.getElementById("profileDivision").value = profile.division || "";
  document.getElementById("welcome").textContent = t("welcome") + (profile.display_name || profile.full_name || "MPK") + " · " + (profile.custom_role || profile.access_level);
- await loadAspirations();
+  await loadMonthlyAgenda();
+  await loadAspirations();
  await loadAdminChatInbox();
 }
 
@@ -1102,7 +1256,7 @@ async function loadAspirations(){
  const list = document.getElementById("aspirationList");
  list.textContent = t("loading");
  const result = await db.from("aspirations")
-  .select("id,title,content,sender_name,sender_division,category,addressed_to,is_anonymous,contact_permission,contact_info,status,admin_response,created_at")
+  .select("id,title,content,sender_name,sender_division,category,addressed_to,is_anonymous,contact_permission,contact_info,status,admin_response,aspiration_type,monthly_agenda_id,created_at")
   .order("created_at",{ascending:false});
  if(result.error){
   list.textContent = t("sendError") + result.error.message;
@@ -1119,7 +1273,8 @@ async function loadAspirations(){
   card.className = "admin-item";
   addText(card,"h3","",item.title || item.category);
   const who = item.is_anonymous ? t("anonymous") : (item.sender_name || "—") + (item.sender_division ? " · " + item.sender_division : "");
-  const metaText = who + " · " + item.category + " · " + t("to") + ": " + (item.addressed_to || "—") + " · " + formatDate(item.created_at);
+  const aspirationModeLabel = item.aspiration_type==="monthly" ? t("monthlyAspirationTitle") : t("dailyAspirationTitle");
+   const metaText = aspirationModeLabel + " · " + who + " · " + item.category + " · " + t("to") + ": " + (item.addressed_to || "—") + " · " + formatDate(item.created_at);
   addText(card,"div","admin-meta",metaText);
   addText(card,"div","admin-body",item.content);
   if(item.contact_permission && item.contact_info){
