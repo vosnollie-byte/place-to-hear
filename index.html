@@ -887,7 +887,11 @@ document.getElementById("monthlyAgendaForm").addEventListener("submit",async fun
  }catch(error){status.className="form-status error";status.textContent=t("monthlyAdminError")+(error.message||"Unknown error");}
  finally{button.disabled=false;}
 });
-setInterval(function(){if(!monthlyAgendaLoadError&&currentMonthlyAgenda)renderMonthlyAgendaCard();},60000);
+setInterval(function(){
+ const aspirationOpen=!document.getElementById("aspiration").classList.contains("hidden");
+ const adminOpen=!document.getElementById("admin").classList.contains("hidden");
+ if(aspirationOpen||adminOpen) loadMonthlyAgenda();
+},60000);
 document.getElementById("aspirationForm").addEventListener("submit",async function(event){
  event.preventDefault();
  const button = document.getElementById("submitBtn");
