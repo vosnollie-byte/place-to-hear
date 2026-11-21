@@ -143,7 +143,7 @@ begin
       from pg_policies
      where schemaname = 'public'
        and tablename = 'aspirations'
-       and cmd = 'INSERT'
+       and cmd in ('INSERT', 'ALL')
   loop
     execute format(
       'drop policy %I on public.aspirations',
