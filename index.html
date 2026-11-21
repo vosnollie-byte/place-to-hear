@@ -200,6 +200,31 @@ footer small{color:rgba(255,255,255,.7)}
 .monthly-agenda-admin .profile-edit-form{max-width:650px}
 .monthly-agenda-summary{margin:16px 0;padding:13px 15px;border-radius:14px;background:#e8eff5;color:#243b5b;font-size:13px;line-height:1.6}
 @media(max-width:760px){.aspiration-choices{grid-template-columns:1fr;gap:14px;padding:0 16px}.aspiration-choice-card{padding:22px;min-height:220px}.monthly-agenda-admin{padding:18px 15px}}
+
+.admin-account-button{position:relative;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:50%;background:var(--navy);color:white;padding:0;box-shadow:0 5px 14px rgba(36,59,91,.16);transition:transform .18s,background .18s}
+.admin-account-button:hover{background:var(--lapis);transform:translateY(-1px)}
+.admin-account-button svg{width:21px;height:21px;display:block}
+.admin-account-dot{position:absolute;right:1px;bottom:1px;width:11px;height:11px;border-radius:50%;background:#83c99b;border:2px solid var(--ivory)}
+.admin-hub{margin-top:22px}
+.admin-hub-heading{margin:0 0 20px}
+.admin-hub-heading h2{font-size:25px;margin:5px 0;color:var(--navy)}
+.admin-hub-heading p{margin:0;color:#68768a;line-height:1.6}
+.admin-hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.admin-hub-card{display:flex;flex-direction:column;align-items:flex-start;gap:10px;text-align:left;min-height:190px;padding:23px;border:1px solid var(--line);border-radius:21px;background:#fff;box-shadow:0 8px 24px rgba(36,59,91,.07);color:var(--navy);transition:transform .18s,box-shadow .18s,border-color .18s}
+.admin-hub-card:hover{transform:translateY(-3px);box-shadow:0 13px 28px rgba(36,59,91,.12);border-color:rgba(45,89,151,.32)}
+.admin-hub-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:#f7f0d2;font-size:25px}
+.admin-hub-card:nth-child(2) .admin-hub-icon{background:#e9eff6}
+.admin-hub-card:nth-child(3) .admin-hub-icon{background:#e6f0ed}
+.admin-hub-card strong{font-size:18px;line-height:1.2}
+.admin-hub-card small{font-size:13px;color:#68768a;line-height:1.5}
+.admin-module{margin-top:18px}
+.admin-module-heading{display:flex;align-items:center;gap:14px;margin:4px 0 20px}
+.admin-module-heading h2{font-size:25px;margin:0;color:var(--navy)}
+.admin-module-heading p{font-size:13px;margin:3px 0 0;color:#6b778a}
+.admin-back-button{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;background:white;color:var(--navy);padding:10px 15px;font-weight:900}
+.admin-module .monthly-agenda-admin{margin-top:0}
+@media(max-width:760px){.admin-hub-grid{grid-template-columns:1fr}.admin-hub-card{min-height:unset;padding:19px}.admin-module-heading{align-items:flex-start;flex-direction:column;gap:10px}}
+@media(max-width:560px){.admin-account-button{width:38px;height:38px}.admin-hub-heading h2,.admin-module-heading h2{font-size:22px}}
 </style>
 </head>
 <body>
@@ -223,7 +248,11 @@ footer small{color:rgba(255,255,255,.7)}
     <button id="langID" class="active" onclick="setLanguage('id')">ID</button>
     <button id="langEN" onclick="setLanguage('en')">EN</button>
    </div>
-   <button class="login-link" data-i18n="navLogin" onclick="showSection('admin')">Login ↗</button>
+   <button class="login-link" id="loginNavButton" data-i18n="navLogin" onclick="showSection('admin')">Login ↗</button>
+   <button class="admin-account-button hidden" id="adminAccountButton" type="button" onclick="openAdminHub()" aria-label="Open MPK admin menu" title="MPK Admin">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.8"/><path d="M5.2 20c.6-3.3 3.2-5.2 6.8-5.2s6.2 1.9 6.8 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <span class="admin-account-dot"></span>
+   </button>
   </div>
  </div>
 </header>
@@ -455,7 +484,38 @@ footer small{color:rgba(255,255,255,.7)}
   </div>
   <div id="dashboard" class="hidden">
    <div class="admin-toolbar"><div><div id="welcome" style="font-weight:1000"></div><p class="hint" data-i18n="adminHint">Kelola status dan tanggapan setiap aspirasi.</p></div><button class="btn-small" onclick="logout()" data-i18n="logoutButton">Keluar</button></div>
-   <div class="profile-edit-card">
+
+   <div id="adminHub" class="admin-hub">
+    <div class="admin-hub-heading">
+     <div class="section-kicker" data-i18n="adminHubKicker">MPK CONTROL CENTER</div>
+     <h2 data-i18n="adminHubTitle">Menu Pengurus</h2>
+     <p data-i18n="adminHubIntro">Pilih ruang kerja yang ingin kamu buka.</p>
+    </div>
+    <div class="admin-hub-grid">
+     <button type="button" class="admin-hub-card" onclick="openAdminModule('workbench')">
+      <span class="admin-hub-icon" aria-hidden="true">🗂️</span>
+      <strong data-i18n="adminWorkbenchTitle">Workbench</strong>
+      <small data-i18n="adminWorkbenchCopy">Kelola dan tanggapi aspirasi yang masuk.</small>
+     </button>
+     <button type="button" class="admin-hub-card" onclick="openAdminModule('monthly')">
+      <span class="admin-hub-icon" aria-hidden="true">🗓️</span>
+      <strong data-i18n="adminMonthlyMenuTitle">Set Monthly Agenda</strong>
+      <small data-i18n="adminMonthlyMenuCopy">Atur jadwal buka dan tutup Aspirasi Wajib Bulanan.</small>
+     </button>
+     <button type="button" class="admin-hub-card" onclick="openAdminModule('chat')">
+      <span class="admin-hub-icon" aria-hidden="true">💬</span>
+      <strong data-i18n="adminRoomChatTitle">Room Chat</strong>
+      <small data-i18n="adminRoomChatCopy">Buka dan balas percakapan siswa.</small>
+     </button>
+    </div>
+   </div>
+
+   <section id="adminWorkbench" class="admin-module hidden">
+    <div class="admin-module-heading">
+     <button type="button" class="admin-back-button" onclick="openAdminModule('hub')" data-i18n="adminModuleBack">← Kembali ke menu</button>
+     <div><h2 data-i18n="adminWorkbenchTitle">Workbench</h2><p data-i18n="adminWorkbenchCopy">Kelola dan tanggapi aspirasi yang masuk.</p></div>
+    </div>
+       <div class="profile-edit-card">
     <div class="section-kicker" data-i18n="profileEditKicker">YOUR PROFILE</div>
     <h2 data-i18n="profileEditTitle">Atur Nama Tampilan</h2>
     <p class="hint" data-i18n="profileEditIntro">Nama ini akan terlihat di halaman About dan ruang chat. Setiap anggota mengatur namanya sendiri.</p>
@@ -493,7 +553,16 @@ footer small{color:rgba(255,255,255,.7)}
      </form>
     </div>
    </div>
-   <section class="monthly-agenda-admin">
+       <h2 style="font-size:22px;margin-top:25px" data-i18n="adminListTitle">Daftar Aspirasi</h2>
+   <div id="aspirationList"></div>
+   </section>
+
+   <section id="adminMonthlyModule" class="admin-module hidden">
+    <div class="admin-module-heading">
+     <button type="button" class="admin-back-button" onclick="openAdminModule('hub')" data-i18n="adminModuleBack">← Kembali ke menu</button>
+     <div><h2 data-i18n="adminMonthlyMenuTitle">Set Monthly Agenda</h2><p data-i18n="adminMonthlyMenuCopy">Atur jadwal buka dan tutup Aspirasi Wajib Bulanan.</p></div>
+    </div>
+       <section class="monthly-agenda-admin">
     <div class="section-kicker" data-i18n="monthlyAdminKicker">MONTHLY ASPIRATION CONTROL</div>
     <h2 data-i18n="monthlyAdminTitle">Jadwal Aspirasi Wajib Bulanan</h2>
     <p class="hint" data-i18n="monthlyAdminIntro">Atur satu agenda Aspirasi Wajib. Website akan membuka dan menutup formulir otomatis sesuai jadwal.</p>
@@ -507,12 +576,18 @@ footer small{color:rgba(255,255,255,.7)}
      <div id="monthlyAgendaAdminStatus" class="form-status" role="status" aria-live="polite"></div>
     </form>
    </section>
-   <h2 style="font-size:22px;margin-top:25px" data-i18n="adminListTitle">Daftar Aspirasi</h2>
-   <div id="aspirationList"></div>
-   <div class="admin-chat-inbox">
+   </section>
+
+   <section id="adminChatModule" class="admin-module hidden">
+    <div class="admin-module-heading">
+     <button type="button" class="admin-back-button" onclick="openAdminModule('hub')" data-i18n="adminModuleBack">← Kembali ke menu</button>
+     <div><h2 data-i18n="adminRoomChatTitle">Room Chat</h2><p data-i18n="adminRoomChatCopy">Buka dan balas percakapan siswa.</p></div>
+    </div>
+       <div class="admin-chat-inbox">
     <div class="admin-toolbar"><div><h2 style="font-size:22px;margin:25px 0 4px" data-i18n="adminInboxTitle">Chat Inbox</h2><p class="hint" data-i18n="adminInboxIntro">Percakapan siswa yang ditujukan kepadamu.</p></div><button class="btn-small" type="button" onclick="loadAdminChatInbox()" data-i18n="adminInboxRefresh">Refresh Inbox</button></div>
     <div id="adminChatList"></div>
    </div>
+   </section>
   </div>
  </div>
 </section>
@@ -554,7 +629,7 @@ const translations = {
   trackingNote:"Setelah dikirim, aspirasi akan otomatis muncul di My Space pada browser/perangkat yang sama. Riwayat tidak otomatis berpindah ke browser atau perangkat lain.",
   spaceKicker:"YOUR PERSONAL CORNER",spaceTitle:"My Space",spaceIntro:"Di sini kamu bisa melihat aspirasi yang dikirim dari browser ini, tanpa kode pelacakan atau akun siswa.",spacePrivacy:"Privasi: My Space terhubung ke browser ini. Jika browser data dihapus atau kamu berganti perangkat/browser, riwayat mungkin tidak muncul lagi. Pada perangkat bersama, orang lain yang memakai browser ini juga dapat membuka riwayatnya.",
   aboutKicker:"ABOUT PLACE TO HEAR",aboutTitle:"A space for every voice.",aboutIntro:"Place to Hear adalah ruang aspirasi MPK 26/27 untuk menampung suara siswa, mendengarkan dengan terbuka, dan membantu menindaklanjuti hal yang perlu diperbaiki.",about1Title:"Listening",about1Copy:"Mendengarkan cerita dan aspirasi dengan terbuka.",about2Title:"Acting",about2Copy:"Membantu menyampaikan aspirasi kepada pihak yang dituju.",about3Title:"Growing",about3Copy:"Membangun lingkungan sekolah yang lebih baik bersama-sama.",
-  adminKicker:"PRIVATE AREA",adminTitle:"Ruang Kerja MPK",loginIntro:"Masuk menggunakan akun resmi anggota MPK.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",passwordResetLink:"Atur / lupa password",passwordResetEnterEmail:"Masukkan email akun yang ingin diatur password-nya.",passwordResetSending:"Mengirim tautan pengaturan password...",passwordResetSent:"Tautan pengaturan password sudah dikirim. Periksa email dan folder Spam.",passwordResetError:"Tautan gagal dikirim: ",passwordSetupTitle:"Buat password baru",passwordSetupIntro:"Buat password untuk akun Place to Hear kamu.",newPasswordLabel:"Password baru",confirmPasswordLabel:"Ulangi password baru",passwordSetupButton:"Simpan password →",passwordSetupShort:"Password minimal 8 karakter.",passwordSetupMismatch:"Kedua password belum sama.",passwordSetupSaving:"Menyimpan password...",passwordSetupSuccess:"Password berhasil dibuat. Sekarang login menggunakan password baru.",passwordSetupError:"Password gagal disimpan: ",adminHint:"Kelola status dan tanggapan setiap aspirasi.",logoutButton:"Keluar",adminListTitle:"Daftar Aspirasi",footerLine:"Listening. Acting. Growing. Setiap suara berarti ♡",teamKicker:"THE PEOPLE BEHIND THE PLATFORM",teamTitle:"Meet Our MPK Team",teamIntro:"Kenali anggota MPK yang siap mendengarkan suaramu. Pilih anggota untuk memulai percakapan pribadi.",teamLoading:"Memuat anggota MPK...",teamLoadError:"Anggota MPK belum dapat dimuat: ",teamEmpty:"Belum ada profil anggota MPK yang memiliki akses Owner/Admin.",chatMe:"Chat Me ↗",chatOpen:"Buka percakapan",chatBack:"← Kembali ke About",chatKicker:"PRIVATE CONVERSATION",chatTitle:"Chat with MPK",chatIntro:"Mulai percakapan pribadi dengan anggota MPK yang kamu pilih.",chatIdentityTitle:"Sebelum memulai chat",chatIdentityHint:"Pilih apakah kamu ingin menggunakan nama atau mengirim secara anonim.",chatAnonymous:"Mulai chat secara anonim",chatAnonymousHint:"Nama kamu tidak akan ditampilkan kepada anggota MPK.",chatNameLabel:"Nama yang ingin ditampilkan",chatStart:"Mulai Percakapan →",chatStartError:"Chat belum dapat dimulai: ",chatMessagesTitle:"Percakapan",chatRefresh:"Refresh",chatSend:"Kirim",chatRoomsTitle:"Percakapan Saya",chatRoomsLoading:"Memuat percakapan...",chatRoomsEmpty:"Belum ada percakapan. Pilih anggota MPK di halaman About untuk memulai.",chatNoMessages:"Belum ada pesan. Mulai percakapanmu!",chatSendError:"Pesan gagal dikirim: ",chatStudentLabel:"Kamu",chatAdminLabel:"MPK",chatChooseMember:"Pilih anggota MPK terlebih dahulu.",adminInboxTitle:"Chat Inbox",adminInboxIntro:"Percakapan siswa yang ditujukan kepadamu.",adminInboxRefresh:"Refresh Inbox",adminInboxLoading:"Memuat pesan masuk...",adminInboxEmpty:"Belum ada percakapan masuk.",adminInboxError:"Inbox chat belum dapat dimuat: ",adminReplyPlaceholder:"Tulis balasan...",adminReply:"Balas",adminReplyError:"Balasan gagal dikirim: ",adminNewRoom:"Percakapan baru",profileEditKicker:"YOUR PROFILE",profileEditTitle:"Atur Nama Tampilan",profileEditIntro:"Nama ini akan terlihat di halaman About dan ruang chat. Setiap anggota mengatur namanya sendiri.",profileDisplayNameLabel:"Nama tampilan",profileDivisionLabel:"Divisi pengurus",profileSaveButton:"Simpan Profil →",profileSaveLoading:"Menyimpan nama...",profileSaveSuccess:"Nama tampilan berhasil diperbarui.",profileSaveError:"Nama tampilan gagal diperbarui: ",profileSaveEmpty:"Isi nama tampilan terlebih dahulu.",changePasswordTitle:"Ganti Password",changePasswordIntro:"Setelah login pertama dengan password sementara, ganti dengan password milikmu sendiri.",changePasswordButton:"Perbarui Password →",changePasswordShort:"Password minimal 8 karakter.",changePasswordMismatch:"Kedua password belum sama.",changePasswordSaving:"Memperbarui password...",changePasswordSuccess:"Password berhasil diperbarui. Gunakan password baru untuk login berikutnya.",changePasswordError:"Password gagal diperbarui: ",
+  adminKicker:"PRIVATE AREA",adminTitle:"Ruang Kerja MPK",adminHubKicker:"MPK CONTROL CENTER",adminHubTitle:"Menu Pengurus",adminHubIntro:"Pilih ruang kerja yang ingin kamu buka.",adminWorkbenchTitle:"Workbench",adminWorkbenchCopy:"Kelola dan tanggapi aspirasi yang masuk.",adminMonthlyMenuTitle:"Set Monthly Agenda",adminMonthlyMenuCopy:"Atur jadwal buka dan tutup Aspirasi Wajib Bulanan.",adminRoomChatTitle:"Room Chat",adminRoomChatCopy:"Buka dan balas percakapan siswa.",adminModuleBack:"← Kembali ke menu",loginIntro:"Masuk menggunakan akun resmi anggota MPK.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",passwordResetLink:"Atur / lupa password",passwordResetEnterEmail:"Masukkan email akun yang ingin diatur password-nya.",passwordResetSending:"Mengirim tautan pengaturan password...",passwordResetSent:"Tautan pengaturan password sudah dikirim. Periksa email dan folder Spam.",passwordResetError:"Tautan gagal dikirim: ",passwordSetupTitle:"Buat password baru",passwordSetupIntro:"Buat password untuk akun Place to Hear kamu.",newPasswordLabel:"Password baru",confirmPasswordLabel:"Ulangi password baru",passwordSetupButton:"Simpan password →",passwordSetupShort:"Password minimal 8 karakter.",passwordSetupMismatch:"Kedua password belum sama.",passwordSetupSaving:"Menyimpan password...",passwordSetupSuccess:"Password berhasil dibuat. Sekarang login menggunakan password baru.",passwordSetupError:"Password gagal disimpan: ",adminHint:"Kelola status dan tanggapan setiap aspirasi.",logoutButton:"Keluar",adminListTitle:"Daftar Aspirasi",footerLine:"Listening. Acting. Growing. Setiap suara berarti ♡",teamKicker:"THE PEOPLE BEHIND THE PLATFORM",teamTitle:"Meet Our MPK Team",teamIntro:"Kenali anggota MPK yang siap mendengarkan suaramu. Pilih anggota untuk memulai percakapan pribadi.",teamLoading:"Memuat anggota MPK...",teamLoadError:"Anggota MPK belum dapat dimuat: ",teamEmpty:"Belum ada profil anggota MPK yang memiliki akses Owner/Admin.",chatMe:"Chat Me ↗",chatOpen:"Buka percakapan",chatBack:"← Kembali ke About",chatKicker:"PRIVATE CONVERSATION",chatTitle:"Chat with MPK",chatIntro:"Mulai percakapan pribadi dengan anggota MPK yang kamu pilih.",chatIdentityTitle:"Sebelum memulai chat",chatIdentityHint:"Pilih apakah kamu ingin menggunakan nama atau mengirim secara anonim.",chatAnonymous:"Mulai chat secara anonim",chatAnonymousHint:"Nama kamu tidak akan ditampilkan kepada anggota MPK.",chatNameLabel:"Nama yang ingin ditampilkan",chatStart:"Mulai Percakapan →",chatStartError:"Chat belum dapat dimulai: ",chatMessagesTitle:"Percakapan",chatRefresh:"Refresh",chatSend:"Kirim",chatRoomsTitle:"Percakapan Saya",chatRoomsLoading:"Memuat percakapan...",chatRoomsEmpty:"Belum ada percakapan. Pilih anggota MPK di halaman About untuk memulai.",chatNoMessages:"Belum ada pesan. Mulai percakapanmu!",chatSendError:"Pesan gagal dikirim: ",chatStudentLabel:"Kamu",chatAdminLabel:"MPK",chatChooseMember:"Pilih anggota MPK terlebih dahulu.",adminInboxTitle:"Chat Inbox",adminInboxIntro:"Percakapan siswa yang ditujukan kepadamu.",adminInboxRefresh:"Refresh Inbox",adminInboxLoading:"Memuat pesan masuk...",adminInboxEmpty:"Belum ada percakapan masuk.",adminInboxError:"Inbox chat belum dapat dimuat: ",adminReplyPlaceholder:"Tulis balasan...",adminReply:"Balas",adminReplyError:"Balasan gagal dikirim: ",adminNewRoom:"Percakapan baru",profileEditKicker:"YOUR PROFILE",profileEditTitle:"Atur Nama Tampilan",profileEditIntro:"Nama ini akan terlihat di halaman About dan ruang chat. Setiap anggota mengatur namanya sendiri.",profileDisplayNameLabel:"Nama tampilan",profileDivisionLabel:"Divisi pengurus",profileSaveButton:"Simpan Profil →",profileSaveLoading:"Menyimpan nama...",profileSaveSuccess:"Nama tampilan berhasil diperbarui.",profileSaveError:"Nama tampilan gagal diperbarui: ",profileSaveEmpty:"Isi nama tampilan terlebih dahulu.",changePasswordTitle:"Ganti Password",changePasswordIntro:"Setelah login pertama dengan password sementara, ganti dengan password milikmu sendiri.",changePasswordButton:"Perbarui Password →",changePasswordShort:"Password minimal 8 karakter.",changePasswordMismatch:"Kedua password belum sama.",changePasswordSaving:"Memperbarui password...",changePasswordSuccess:"Password berhasil diperbarui. Gunakan password baru untuk login berikutnya.",changePasswordError:"Password gagal diperbarui: ",
   sending:"Mengirim aspirasi...",sent:"Terima kasih! Aspirasi kamu berhasil dikirim.",sendError:"Aspirasi gagal dikirim: ",requiredIdentity:"Isi nama dan pilih divisi, atau aktifkan pilihan anonim.",trackingError:"My Space belum dapat memuat riwayat. Pastikan fungsi pelacakan Supabase sudah dipasang.",emptySpace:"Belum ada aspirasi dari browser ini.",emptyAdmin:"Belum ada aspirasi masuk.",loading:"Memuat...",loginChecking:"Memeriksa akun...",loginFailed:"Login gagal: ",profileMissing:"Profil anggota tidak ditemukan.",notAdmin:"Akun ini belum memiliki akses Admin MPK.",welcome:"Halo, ",anonymous:"Anonim",status:"Status",response:"Tanggapan MPK",noResponse:"Belum ada tanggapan dari MPK.",save:"Simpan perubahan",saved:"Perubahan berhasil disimpan.",saveError:"Gagal menyimpan perubahan: ",contact:"Kontak",contactAllowed:"Bersedia dihubungi",contactNotAllowed:"Tidak meminta dihubungi",to:"Ditujukan kepada",dateLocale:"id-ID",
   status_new:"Baru",status_progress:"Diproses",status_done:"Selesai",status_unknown:"Status belum tersedia",trackFunctionMissing:"Fitur My Space perlu diaktifkan di Supabase terlebih dahulu."
  },
@@ -571,7 +646,7 @@ const translations = {
   trackingNote:"After submission, your aspiration will appear automatically in My Space on the same browser/device. History does not automatically transfer to another browser or device.",
   spaceKicker:"YOUR PERSONAL CORNER",spaceTitle:"My Space",spaceIntro:"View aspirations submitted from this browser, without a tracking code or student account.",spacePrivacy:"Privacy: My Space is linked to this browser. Clearing browser data or switching devices/browsers may make your history unavailable. On a shared device, others using this browser may also open its history.",
   aboutKicker:"ABOUT PLACE TO HEAR",aboutTitle:"A space for every voice.",aboutIntro:"Place to Hear is the MPK 26/27 aspiration space for student voices, open listening, and following up on matters that can be improved.",about1Title:"Listening",about1Copy:"Listening openly to stories and aspirations.",about2Title:"Acting",about2Copy:"Helping bring aspirations to the relevant people.",about3Title:"Growing",about3Copy:"Building a better school environment together.",
-  adminKicker:"PRIVATE AREA",adminTitle:"MPK Workspace",loginIntro:"Sign in using an official MPK member account.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",passwordResetLink:"Set / forgot password",passwordResetEnterEmail:"Enter the email address for this account.",passwordResetSending:"Sending password setup link...",passwordResetSent:"Password setup link sent. Check your email and Spam folder.",passwordResetError:"Could not send the link: ",passwordSetupTitle:"Create a new password",passwordSetupIntro:"Create a password for your Place to Hear account.",newPasswordLabel:"New password",confirmPasswordLabel:"Confirm new password",passwordSetupButton:"Save password →",passwordSetupShort:"Password must be at least 8 characters.",passwordSetupMismatch:"The two passwords do not match.",passwordSetupSaving:"Saving password...",passwordSetupSuccess:"Password created successfully. Sign in using your new password.",passwordSetupError:"Could not save password: ",adminHint:"Manage the status and response for each aspiration.",logoutButton:"Log out",adminListTitle:"Aspiration List",footerLine:"Listening. Acting. Growing. Every voice matters ♡",teamKicker:"THE PEOPLE BEHIND THE PLATFORM",teamTitle:"Meet Our MPK Team",teamIntro:"Meet the MPK members who are ready to listen. Choose a member to start a private conversation.",teamLoading:"Loading MPK members...",teamLoadError:"MPK members could not be loaded: ",teamEmpty:"No MPK profiles with Owner/Admin access were found yet.",chatMe:"Chat Me ↗",chatOpen:"Open conversation",chatBack:"← Back to About",chatKicker:"PRIVATE CONVERSATION",chatTitle:"Chat with MPK",chatIntro:"Start a private conversation with the MPK member you selected.",chatIdentityTitle:"Before starting a chat",chatIdentityHint:"Choose whether to use your name or remain anonymous.",chatAnonymous:"Start chat anonymously",chatAnonymousHint:"Your name will not be shown to the MPK member.",chatNameLabel:"Name to display",chatStart:"Start Conversation →",chatStartError:"The chat could not be started: ",chatMessagesTitle:"Conversation",chatRefresh:"Refresh",chatSend:"Send",chatRoomsTitle:"My Conversations",chatRoomsLoading:"Loading conversations...",chatRoomsEmpty:"No conversations yet. Choose an MPK member on the About page to start.",chatNoMessages:"No messages yet. Start the conversation!",chatSendError:"Message could not be sent: ",chatStudentLabel:"You",chatAdminLabel:"MPK",chatChooseMember:"Choose an MPK member first.",adminInboxTitle:"Chat Inbox",adminInboxIntro:"Student conversations assigned to you.",adminInboxRefresh:"Refresh Inbox",adminInboxLoading:"Loading incoming messages...",adminInboxEmpty:"No incoming conversations yet.",adminInboxError:"Chat inbox could not be loaded: ",adminReplyPlaceholder:"Write a reply...",adminReply:"Reply",adminReplyError:"Reply could not be sent: ",adminNewRoom:"New conversation",profileEditKicker:"YOUR PROFILE",profileEditTitle:"Customize Your Display Name",profileEditIntro:"This name appears on the About page and in chat rooms. Each member manages their own name.",profileDisplayNameLabel:"Display name",profileDivisionLabel:"Member division",profileSaveButton:"Save Profile →",profileSaveLoading:"Saving name...",profileSaveSuccess:"Your display name has been updated.",profileSaveError:"Could not update display name: ",profileSaveEmpty:"Please enter a display name first.",changePasswordTitle:"Change Password",changePasswordIntro:"After your first login with the temporary password, change it to your own password.",changePasswordButton:"Update Password →",changePasswordShort:"Password must be at least 8 characters.",changePasswordMismatch:"The two passwords do not match.",changePasswordSaving:"Updating password...",changePasswordSuccess:"Password updated. Use the new password for your next sign-in.",changePasswordError:"Could not update password: ",
+  adminKicker:"PRIVATE AREA",adminTitle:"MPK Workspace",adminHubKicker:"MPK CONTROL CENTER",adminHubTitle:"Admin Menu",adminHubIntro:"Choose the workspace you want to open.",adminWorkbenchTitle:"Workbench",adminWorkbenchCopy:"Review and respond to submitted aspirations.",adminMonthlyMenuTitle:"Set Monthly Agenda",adminMonthlyMenuCopy:"Manage when the monthly required aspiration opens and closes.",adminRoomChatTitle:"Room Chat",adminRoomChatCopy:"Open and reply to student conversations.",adminModuleBack:"← Back to menu",loginIntro:"Sign in using an official MPK member account.",emailLabel:"Email",passwordLabel:"Password",loginButton:"Login →",passwordResetLink:"Set / forgot password",passwordResetEnterEmail:"Enter the email address for this account.",passwordResetSending:"Sending password setup link...",passwordResetSent:"Password setup link sent. Check your email and Spam folder.",passwordResetError:"Could not send the link: ",passwordSetupTitle:"Create a new password",passwordSetupIntro:"Create a password for your Place to Hear account.",newPasswordLabel:"New password",confirmPasswordLabel:"Confirm new password",passwordSetupButton:"Save password →",passwordSetupShort:"Password must be at least 8 characters.",passwordSetupMismatch:"The two passwords do not match.",passwordSetupSaving:"Saving password...",passwordSetupSuccess:"Password created successfully. Sign in using your new password.",passwordSetupError:"Could not save password: ",adminHint:"Manage the status and response for each aspiration.",logoutButton:"Log out",adminListTitle:"Aspiration List",footerLine:"Listening. Acting. Growing. Every voice matters ♡",teamKicker:"THE PEOPLE BEHIND THE PLATFORM",teamTitle:"Meet Our MPK Team",teamIntro:"Meet the MPK members who are ready to listen. Choose a member to start a private conversation.",teamLoading:"Loading MPK members...",teamLoadError:"MPK members could not be loaded: ",teamEmpty:"No MPK profiles with Owner/Admin access were found yet.",chatMe:"Chat Me ↗",chatOpen:"Open conversation",chatBack:"← Back to About",chatKicker:"PRIVATE CONVERSATION",chatTitle:"Chat with MPK",chatIntro:"Start a private conversation with the MPK member you selected.",chatIdentityTitle:"Before starting a chat",chatIdentityHint:"Choose whether to use your name or remain anonymous.",chatAnonymous:"Start chat anonymously",chatAnonymousHint:"Your name will not be shown to the MPK member.",chatNameLabel:"Name to display",chatStart:"Start Conversation →",chatStartError:"The chat could not be started: ",chatMessagesTitle:"Conversation",chatRefresh:"Refresh",chatSend:"Send",chatRoomsTitle:"My Conversations",chatRoomsLoading:"Loading conversations...",chatRoomsEmpty:"No conversations yet. Choose an MPK member on the About page to start.",chatNoMessages:"No messages yet. Start the conversation!",chatSendError:"Message could not be sent: ",chatStudentLabel:"You",chatAdminLabel:"MPK",chatChooseMember:"Choose an MPK member first.",adminInboxTitle:"Chat Inbox",adminInboxIntro:"Student conversations assigned to you.",adminInboxRefresh:"Refresh Inbox",adminInboxLoading:"Loading incoming messages...",adminInboxEmpty:"No incoming conversations yet.",adminInboxError:"Chat inbox could not be loaded: ",adminReplyPlaceholder:"Write a reply...",adminReply:"Reply",adminReplyError:"Reply could not be sent: ",adminNewRoom:"New conversation",profileEditKicker:"YOUR PROFILE",profileEditTitle:"Customize Your Display Name",profileEditIntro:"This name appears on the About page and in chat rooms. Each member manages their own name.",profileDisplayNameLabel:"Display name",profileDivisionLabel:"Member division",profileSaveButton:"Save Profile →",profileSaveLoading:"Saving name...",profileSaveSuccess:"Your display name has been updated.",profileSaveError:"Could not update display name: ",profileSaveEmpty:"Please enter a display name first.",changePasswordTitle:"Change Password",changePasswordIntro:"After your first login with the temporary password, change it to your own password.",changePasswordButton:"Update Password →",changePasswordShort:"Password must be at least 8 characters.",changePasswordMismatch:"The two passwords do not match.",changePasswordSaving:"Updating password...",changePasswordSuccess:"Password updated. Use the new password for your next sign-in.",changePasswordError:"Could not update password: ",
   sending:"Sending your aspiration...",sent:"Thank you! Your aspiration has been submitted.",sendError:"Could not submit aspiration: ",requiredIdentity:"Enter your name and choose a division, or select anonymous.",trackingError:"My Space could not load your history. Make sure the Supabase tracking function has been added.",emptySpace:"There are no aspirations from this browser yet.",emptyAdmin:"No aspirations have been submitted yet.",loading:"Loading...",loginChecking:"Checking account...",loginFailed:"Login failed: ",profileMissing:"Member profile not found.",notAdmin:"This account does not have MPK Admin access.",welcome:"Hello, ",anonymous:"Anonymous",status:"Status",response:"MPK response",noResponse:"There is no response from MPK yet.",save:"Save changes",saved:"Changes saved successfully.",saveError:"Could not save changes: ",contact:"Contact",contactAllowed:"Agreed to be contacted",contactNotAllowed:"No follow-up requested",to:"Addressed to",dateLocale:"en-US",
   status_new:"New",status_progress:"In Progress",status_done:"Resolved",status_unknown:"Status unavailable",trackFunctionMissing:"My Space must be enabled in Supabase first."
  }
@@ -669,6 +744,32 @@ function backToAspirationChoices(){
  selectedAspirationMode="daily";document.getElementById("aspirationFormShell").classList.add("hidden");
  document.getElementById("aspirationChooser").classList.remove("hidden");loadMonthlyAgenda();
 }
+function setAdminAuthIndicator(isLoggedIn){
+ const accountButton=document.getElementById("adminAccountButton");
+ const loginButton=document.getElementById("loginNavButton");
+ if(accountButton) accountButton.classList.toggle("hidden",!isLoggedIn);
+ if(loginButton) loginButton.classList.toggle("hidden",isLoggedIn);
+}
+function openAdminHub(){
+ showSection("admin");
+}
+function openAdminModule(module){
+ const modules={
+  hub:"adminHub",
+  workbench:"adminWorkbench",
+  monthly:"adminMonthlyModule",
+  chat:"adminChatModule"
+ };
+ Object.values(modules).forEach(function(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle("hidden",id!==modules[module]);
+ });
+ if(module==="workbench") loadAspirations();
+ if(module==="monthly") loadMonthlyAgenda();
+ if(module==="chat") loadAdminChatInbox();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
 function showSection(section){
  ["home","aspiration","space","about","chat","admin"].forEach(function(id){
   const el=document.getElementById(id);
@@ -1191,6 +1292,7 @@ async function checkSession(){
  const sessionResult = await db.auth.getUser();
  const user = sessionResult.data && sessionResult.data.user;
  if(!user){
+  setAdminAuthIndicator(false);
   loginArea.classList.remove("hidden");
   dashboard.classList.add("hidden");
   return;
@@ -1200,24 +1302,25 @@ async function checkSession(){
   .eq("id",user.id).single();
  const profile = profileResult.data;
  if(profileResult.error || !profile){
+  setAdminAuthIndicator(false);
   document.getElementById("loginStatus").textContent = t("profileMissing");
   await db.auth.signOut();
   return;
  }
  if(profile.access_level !== "owner" && profile.access_level !== "admin"){
+  setAdminAuthIndicator(false);
   document.getElementById("loginStatus").textContent = t("notAdmin");
   await db.auth.signOut();
   return;
  }
  loginArea.classList.add("hidden");
  dashboard.classList.remove("hidden");
+ setAdminAuthIndicator(true);
  activeAdminUserId = user.id;
  document.getElementById("profileDisplayName").value = profile.display_name || profile.full_name || "";
  document.getElementById("profileDivision").value = profile.division || "";
  document.getElementById("welcome").textContent = t("welcome") + (profile.display_name || profile.full_name || "MPK") + " · " + (profile.custom_role || profile.access_level);
-  await loadMonthlyAgenda();
-  await loadAspirations();
- await loadAdminChatInbox();
+  openAdminModule("hub");
 }
 
 async function loadAdminChatInbox(){
@@ -1326,12 +1429,14 @@ async function loadAspirations(){
 }
 async function logout(){
  await db.auth.signOut();
+ setAdminAuthIndicator(false);
  document.getElementById("dashboard").classList.add("hidden");
  document.getElementById("loginArea").classList.remove("hidden");
  document.getElementById("loginStatus").textContent = "";
 }
 setLanguage("id");
 anonymousToggle.dispatchEvent(new Event("change"));
+checkSession();
 </script>
 </body>
 </html>
